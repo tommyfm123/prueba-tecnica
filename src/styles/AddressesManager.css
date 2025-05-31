@@ -1,0 +1,70 @@
+.addresses-manager {
+    margin-top: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form {
+    display: grid;
+    gap: 10px;
+    margin: 20px 0;
+    padding: 2rem;
+    background-color: #ffff;
+}
+
+.form label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+
+.form input,
+.form select {
+    padding: 6px;
+    margin-top: 4px;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.address-list {
+    display: grid;
+    gap: 12px;
+}
+
+.address-card {
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.address-info {
+    max-width: 70%;
+}
+
+.tag {
+    background: #eee;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.actions button {
+    margin-left: 8px;
+}
+
+.actions .delete {
+    color: red;
+}

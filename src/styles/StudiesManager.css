@@ -1,0 +1,124 @@
+.studies-manager {
+    margin-top: 1rem;
+}
+
+.header {
+    display: flex;
+
+    margin-bottom: 1rem;
+}
+
+/* titulo estudios */
+.header h3 {
+    font-size: 1rem;
+}
+
+.study-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    background-color: #ffffff;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.study-form input {
+    padding: 0.5rem;
+    padding-left: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.study-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.study-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+}
+
+.study-card h4 {
+    margin: 0 0 0.25rem;
+}
+
+.actions {
+    display: flex;
+}
+
+.actions button {
+    width: 100%;
+    padding: 0.3rem 1rem;
+}
+
+.btn-Add {
+    display: flex;
+    gap: 10px;
+    background-color: #3da33d;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    margin-bottom: .5rem;
+}
+
+.btn-Add:hover {
+    background-color: #309930;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 1rem;
+    justify-content: flex-end;
+}
+
+.form-actions button {
+    padding: 10px 18px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    font-weight: 600;
+    min-width: 100px;
+}
+
+/* Botón principal (submit) */
+.form-actions button[type="submit"] {
+    background-color: #007aff;
+    /* Azul Apple */
+    color: white;
+    border-color: #007aff;
+}
+
+.form-actions button[type="submit"]:hover {
+    background-color: #005bb5;
+    border-color: #005bb5;
+}
+
+/* Botón secundario (cancelar) */
+.form-actions button[type="button"] {
+    background-color: transparent;
+    color: #007aff;
+    border: 1.5px solid #007aff;
+}
+
+.form-actions button[type="button"]:hover {
+    background-color: #e6f0ff;
+    border-color: #005bb5;
+    color: #005bb5;
+}

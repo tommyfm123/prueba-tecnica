@@ -1,0 +1,55 @@
+import { useState } from "react"
+import { useAuth } from "../context/AuthContext"
+import StudiesManager from "../components/StudiesManager"
+import AddressesManager from "../components/AddressesManager"
+import "../styles/UserDashboard.css"
+
+export default function UserDashboard() {
+    const { user } = useAuth()
+    const [activeTab, setActiveTab] = useState("studies")
+
+    if (!user) return null
+
+    return (
+        <div className="user-dashboard">
+            <h1>Mi Perfil</h1>
+            <div className="profile-card">
+                <div className="profile-field">
+                    <label>Nombre:</label>
+                    <p>{user.name}</p>
+                </div>
+                <div className="profile-field">
+                    <label>Email:</label>
+                    <p>{user.email}</p>
+                </div>
+            </div>
+
+            <h2>Mis Datos</h2>
+            <p>Gestiona tu información personal</p>
+
+            <div className="tabs">
+                <button
+                    className={activeTab === "studies" ? "active" : ""}
+                    onClick={() => setActiveTab("studies")}
+                >
+                    Mis Estudios
+                </button>
+                <button
+                    className={activeTab === "addresses" ? "active" : ""}
+                    onClick={() => setActiveTab("addresses")}
+                >
+                    Mis Direcciones
+                </button>
+            </div>
+
+            <div className="tab-content">
+                {activeTab === "studies" && (
+                    <StudiesManager userId={user.id} isAdmin={false} />
+                )}
+                {activeTab === "addresses" && (
+                    <AddressesManager userId={user.id} isAdmin={false} />
+                )}
+            </div>
+        </div>
+    )
+}
