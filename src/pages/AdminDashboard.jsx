@@ -6,6 +6,7 @@ import AddressesManager from "../components/AddressesManager"
 import { Users, Plus, GraduationCap, MapPinHouse } from "lucide-react"
 import "../styles/AdminDashboard.css"
 import Button from "../components/ui/Button"
+import RoleChip from "../components/ui/RoleChip"
 
 export default function AdminDashboard() {
     const { user } = useAuth() // traemos los datos del usuario logueado desde el contexto de autenticación
@@ -141,9 +142,12 @@ export default function AdminDashboard() {
                 <div className="user-detail">
                     {selectedUser ? (
                         <>
-                            <h2>Datos de {selectedUser.name}</h2>
-                            <span className="tag">{selectedUser.role}</span>
-                            <p>{selectedUser.email}</p>
+                            <div className="user-information">
+                                <h2>Datos de {selectedUser.name}</h2>
+                                <RoleChip role={selectedUser.role} />
+                                <p>{selectedUser.email}</p>
+                            </div>
+
 
                             <div className="tabs">
                                 <Button

@@ -10,10 +10,6 @@
     gap: 0.5rem;
 }
 
-.header h3 {
-    font-size: 1.5rem;
-}
-
 .form {
     display: flex;
     flex-direction: column;
@@ -69,18 +65,19 @@
     max-width: 100%;
 }
 
-.address-info h4 {
+.address-info h3 {
     margin: 0 0 0.25rem 0;
     font-size: 1rem;
 }
 
 .tag {
     background: #eee;
-    padding: 4px 8px;
+    padding: 4px 16px;
     border-radius: 12px;
     font-size: 12px;
     display: inline-block;
     margin-top: 0.5rem;
+    width: min-content;
 }
 
 .actions {

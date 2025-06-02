@@ -1,5 +1,5 @@
 .admin-dashboard {
-    padding: 1rem;
+    padding: 0 1rem;
     font-family: sans-serif;
 }
 
@@ -24,21 +24,7 @@
     flex: 1;
 }
 
-.stat-box h3 {
-    font-size: 1.2rem;
-    padding-top: 0.5rem;
-    font-weight: 500;
-    user-select: none;
-    color: #333;
-}
 
-.stat-box p {
-    font-size: 1rem;
-    padding-top: 0;
-    font-weight: normal;
-    user-select: none;
-    color: #616161;
-}
 
 /* Sección principal */
 .main-section {
@@ -65,12 +51,7 @@
     gap: 10px;
 }
 
-.user-list-header p {
-    font-size: 0.9rem;
-    margin-top: 0;
-    padding-top: 0;
-    color: #7b7979;
-}
+
 
 .containerUser {
     display: flex;
@@ -79,19 +60,15 @@
     width: 100%;
 }
 
-.containerUser h2 {
-    font-size: 1.4rem;
+h2 {
+    font-size: 30px;
     color: #333232;
     margin: 0;
     gap: 10px;
     display: flex;
 }
 
-.containerUser p {
-    font-size: 0.8rem;
-    color: #7b7979;
-    margin: 0;
-}
+
 
 .user-item {
     padding: .8rem 1rem;
@@ -136,11 +113,22 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.user-detail p {
-    font-size: 0.9rem;
-    color: #7b7979;
-    margin: 0.5rem 0;
+.user-information {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: auto;
 }
+
+.user-information {
+    gap: 0.5rem;
+}
+
+.user-information h2 {
+    margin: 0;
+}
+
+
 
 .user-detail h2 {
     font-size: 1.5rem;

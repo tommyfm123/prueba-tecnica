@@ -10,6 +10,8 @@
     font-weight: 500;
     transition: background 0.3s;
     color: black;
+    white-space: nowrap;
+    height: 45px;
 }
 
 .tab-btn:hover {
@@ -19,4 +21,8 @@
 .tab-btn.active {
     background-color: #007bff;
     color: white;
+}
+
+.btn-admin-tab {
+    width: 100px;
 }

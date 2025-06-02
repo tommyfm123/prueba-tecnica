@@ -19,15 +19,18 @@ export function AuthProvider({ children }) {
         setLoading(false)
     }, [])
 
-
-    // Función para iniciar sesión
+    // ✅ Nuevo useEffect: actualiza sessionStorage cuando cambia user
+    useEffect(() => {
+        if (user) {
+            sessionStorage.setItem("user", JSON.stringify(user))
+        }
+    }, [user])
 
     const login = async (email, password) => {
         try {
             const response = await mockAuth.login(email, password)
 
             if (response.success) {
-                // Aca guardamos los datos en el estado y en el sessionStorage
                 setToken(response.token)
                 setUser(response.user)
 
@@ -44,12 +47,10 @@ export function AuthProvider({ children }) {
         }
     }
 
-    // Función para cerrar sesión
-
     const logout = () => {
         setUser(null)
         setToken(null)
-        sessionStorage.removeItem("token")  // Borramos el token del storage
+        sessionStorage.removeItem("token")
         sessionStorage.removeItem("user")
     }
 
@@ -57,6 +58,7 @@ export function AuthProvider({ children }) {
         <AuthContext.Provider
             value={{
                 user,
+                setUser, // Asegúrate de exportar setUser para poder actualizar desde otros componentes
                 token,
                 isAuthenticated: !!token && !!user,
                 login,

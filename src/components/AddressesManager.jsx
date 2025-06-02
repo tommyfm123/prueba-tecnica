@@ -3,9 +3,13 @@ import { mockApi } from "../services/fakeApi"
 import "../styles/AddressesManager.css"
 import { Plus } from "lucide-react"
 import Button from "../components/ui/Button"
+// import RoleChip from "../components/ui/RoleChip"
+import TypeChip from "../components/ui/TypeChip"
+import { useAuth } from "../context/AuthContext"
 
-export default function AddressesManager({ userId, isAdmin }) {
+export default function AddressesManager({ userId }) {
     const [addresses, setAddresses] = useState([])
+    const { user } = useAuth()
     const [loading, setLoading] = useState(true)
     const [showForm, setShowForm] = useState(false)
     const [editingId, setEditingId] = useState(null)
@@ -15,6 +19,9 @@ export default function AddressesManager({ userId, isAdmin }) {
         country: "",
         type: "Casa",
     })
+
+    const role = user?.role || "usuario"
+    const isAdmin = role.toLowerCase() === "admin"
 
     useEffect(() => {
         loadAddresses()
@@ -83,7 +90,7 @@ export default function AddressesManager({ userId, isAdmin }) {
     return (
         <div className="addresses-manager">
             <div className="header">
-                <h3>Direcciones</h3>
+                <h2>Direcciones</h2>
                 <Button
                     variant="primary"
                     onClick={() => setShowForm(true)}
@@ -95,7 +102,7 @@ export default function AddressesManager({ userId, isAdmin }) {
 
             {(showForm || editingId) && (
                 <form onSubmit={handleSubmit} className="form">
-                    <h4>{editingId ? "Editar Dirección" : "Agregar Dirección"}</h4>
+                    <h3>{editingId ? "Editar Dirección" : "Agregar Dirección"}</h3>
                     <label>
                         <input
                             value={formData.street}
@@ -158,9 +165,9 @@ export default function AddressesManager({ userId, isAdmin }) {
                     {addresses.map((address) => (
                         <div key={address.id} className="address-card">
                             <div className="address-info">
-                                <h4>{address.street}</h4>
+                                <h3>{address.street}</h3>
                                 <p>{address.city}, {address.country}</p>
-                                <span className="tag">{address.type}</span>
+                                <TypeChip type={address.type} />
                             </div>
                             <div className="actions">
                                 <Button

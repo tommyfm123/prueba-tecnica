@@ -1,9 +1,10 @@
 /* Estilo base del dashboard de usuario */
 .user-dashboard {
-    padding: 1.5rem;
+    padding: 0 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: .5rem;
+    justify-content: center;
     /* margin: 0 auto; */
 }
 
@@ -11,17 +12,12 @@
     width: 100%;
 }
 
-.user-dashboard h1 {
-    font-size: 2rem;
-    font-weight: 600;
-    text-align: center;
-    margin-bottom: 0.5rem;
-}
 
 .User-data {
     display: flex;
     flex-direction: column;
     gap: 5px;
+
 }
 
 .profile-card {
@@ -41,17 +37,15 @@
     color: #333;
 }
 
-.profile-field p {
-    margin: 0.25rem 0 0 0;
-    font-size: 1rem;
-}
+
 
 /* Tabs */
 .tabs {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+    flex-direction: column;
+    gap: 10px;
     justify-content: center;
+    margin-top: 1rem;
 }
 
 
@@ -63,52 +57,7 @@
     gap: 1rem;
 }
 
-/* Wrappers para sobreescribir estilos internos */
-.user-studies-wrapper .form,
-.user-addresses-wrapper .form {
-    background-color: #f4f6fa;
-    border: 1px solid #e0e0e0;
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: none;
-}
 
-.user-studies-wrapper .form label,
-.user-addresses-wrapper .form label {
-    font-size: 0.9rem;
-    color: #444;
-}
-
-.user-studies-wrapper .address-card,
-.user-addresses-wrapper .address-card {
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    padding: 1.2rem;
-    border-radius: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.user-addresses-wrapper .tag {
-    background-color: #dceeff;
-    color: #004080;
-    font-weight: 500;
-    font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 12px;
-    display: inline-block;
-    margin-top: 0.5rem;
-}
-
-.user-addresses-wrapper .actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.user-addresses-wrapper .actions .delete {
-    color: #d00;
-}
 
 /* Responsive */
 @media (min-width: 768px) {
@@ -126,7 +75,7 @@
     }
 
     .tabs {
-        justify-content: flex-start;
+        flex-direction: row;
     }
 
     .user-addresses-wrapper .address-card {

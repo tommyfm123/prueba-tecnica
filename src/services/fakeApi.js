@@ -176,4 +176,18 @@ export const mockApi = {
         }
         return false
     },
+
+    // Funcion para modificar informacion de usuario
+    async updateUser(id, userData) {
+        await delay(500)
+        const index = mockUsers.findIndex((u) => u.id === id)
+        if (index !== -1) {
+            mockUsers[index] = { ...mockUsers[index], ...userData }
+            // No devolvemos la contraseña por seguridad
+            const { password, ...userWithoutPassword } = mockUsers[index]
+            return userWithoutPassword
+        }
+        throw new Error("Usuario no encontrado")
+    },
+
 }

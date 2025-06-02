@@ -12,10 +12,7 @@
     background-color: transparent;
 }
 
-.header h3 {
-    font-size: 1rem;
-    margin: 0;
-}
+
 
 /* Formulario para agregar o editar estudio */
 .study-form {
@@ -30,7 +27,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.study-form h4 {
+.study-form h3 {
     margin: 0 0 1rem 0;
 }
 
@@ -71,7 +68,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.065);
 }
 
-.study-card h4 {
+.study-card h3 {
     margin: 0 0 0.25rem 0;
     font-size: 1rem;
 }
@@ -86,7 +83,6 @@
     gap: 0.5rem;
 }
 
-/* Media Query para pantallas ≥ 768px */
 @media (min-width: 768px) {
     .header {
         flex-direction: row;
@@ -98,7 +94,6 @@
 
     .study-card {
         flex-direction: row;
-        /* fila en desktop */
         align-items: center;
     }
 

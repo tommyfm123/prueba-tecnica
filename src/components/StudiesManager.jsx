@@ -4,6 +4,7 @@ import "../styles/StudiesManager.css"
 import { Plus } from "lucide-react"
 import Button from "../components/ui/Button"
 
+
 export default function StudiesManager({ userId, isAdmin }) {
     const [studies, setStudies] = useState([])
     const [loading, setLoading] = useState(true)
@@ -81,7 +82,7 @@ export default function StudiesManager({ userId, isAdmin }) {
     return (
         <div className="studies-manager">
             <div className="header">
-                <h3>Estudios</h3>
+                <h2>Estudios</h2>
                 <Button variant="primary" icon={Plus} onClick={() => setShowForm(true)}>
                     Agregar Estudio
                 </Button>
@@ -89,7 +90,7 @@ export default function StudiesManager({ userId, isAdmin }) {
 
             {(showForm || editingId) && (
                 <form onSubmit={handleSubmit} className="study-form">
-                    <h4>{editingId ? "Editar Estudio" : "Agregar Estudio"}</h4>
+                    <h3>{editingId ? "Editar Estudio" : "Agregar Estudio"}</h3>
 
                     <input
                         type="text"
@@ -132,9 +133,9 @@ export default function StudiesManager({ userId, isAdmin }) {
                     <p>{isAdmin ? "Este usuario no tiene estudios registrados." : "No tenés estudios registrados."}</p>
                 ) : (
                     studies.map((study) => (
-                        <div key={study.id} className="study-card user-dashboard">
+                        <div key={study.id} className="study-card ">
                             <div>
-                                <h4>{study.title}</h4>
+                                <h3>{study.title}</h3>
                                 <p>
                                     {study.institution} - {study.year}
                                 </p>

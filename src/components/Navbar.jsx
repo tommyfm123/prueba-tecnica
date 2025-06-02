@@ -4,6 +4,7 @@ import { useState } from "react"
 import { LogOut } from "lucide-react"
 import "../styles/Navbar.css"
 import Button from "../components/ui/Button"
+import RoleChip from "../components/ui/RoleChip"
 
 export default function Navbar() {
     const { user, logout } = useAuth()
@@ -15,13 +16,11 @@ export default function Navbar() {
     return (
         <header className="navbar">
             <div className="container">
-                <h1 className="title">Mi Aplicación</h1>
+                <h1>Mi Aplicación</h1>
 
                 <div className="desktop-nav">
                     <span className="username">{user?.name}</span>
-                    <span className={`role-chip ${isAdmin ? "admin" : "user"}`}>
-                        {isAdmin ? "Admin" : "Usuario"}
-                    </span>
+                    <RoleChip role={role} />
                     <Button icon={LogOut} onClick={logout}>
                         Cerrar sesión
                     </Button>

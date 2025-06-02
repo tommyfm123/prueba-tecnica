@@ -25,16 +25,6 @@
     margin-bottom: 1.25rem;
 }
 
-.login-header h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.login-header p {
-    color: #666;
-    font-size: 0.9rem;
-}
-
 .login-form .form-group {
     margin-bottom: 1rem;
 }
@@ -123,13 +113,6 @@
         padding: 2rem;
     }
 
-    .login-header h2 {
-        font-size: 1.75rem;
-    }
-
-    .login-header p {
-        font-size: 1rem;
-    }
 
     .demo-credentials {
         font-size: 0.9rem;

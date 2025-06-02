@@ -2,4 +2,103 @@
 
 * {
     font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Base sizes - mobile first */
+h1 {
+    font-size: 1.5rem;
+    color: #111;
+}
+
+h2 {
+    font-size: 1.25rem;
+    color: #333232;
+    display: flex;
+    gap: 10px;
+}
+
+h3 {
+    font-size: 1rem;
+}
+
+p {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* Specific color or margin overrides */
+
+.container h1 {
+    font-weight: 600;
+}
+
+.stat-box h3 {
+    padding-top: 0.5rem;
+    font-weight: 500;
+    user-select: none;
+}
+
+.stat-box p {
+    padding-top: 0;
+    font-weight: normal;
+    user-select: none;
+    color: #616161;
+}
+
+.user-list-header p {
+    color: #7b7979;
+}
+
+.containerUser p {
+    color: #7b7979;
+}
+
+.user-detail p {
+    color: #7b7979;
+    margin: 0;
+}
+
+.login-header p {
+    color: #666;
+}
+
+.login-header h2 {
+    margin-bottom: 0.5rem;
+}
+
+
+/* Responsive upgrades: tablet and up */
+@media (min-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    h3 {
+        font-size: 1rem;
+    }
+
+    p {
+        font-size: 1rem;
+        color: #424242;
+    }
+
+    .login-header p {
+        font-size: 1rem;
+    }
+
+    .profile-field p {
+        font-size: 1rem;
+        margin: 0.25rem 0 0 0;
+    }
+
+    .login-header h2 {
+        margin-bottom: 0.5rem;
+    }
 }

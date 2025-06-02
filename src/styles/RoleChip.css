@@ -1,0 +1,24 @@
+/* role chip */
+
+.role-chip {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    width: min-content;
+    border-radius: 999px;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.role-chip.admin {
+    background-color: #e6f0ff;
+    color: #1a56db;
+    border: 1px solid #b3d1ff;
+}
+
+.role-chip.user {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
