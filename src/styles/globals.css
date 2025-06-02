@@ -63,12 +63,11 @@ p {
 
 .login-header p {
     color: #666;
-    text-align: center;
+    text-align: left;
 }
 
 .login-header h2 {
     margin-bottom: 0.5rem;
-    text-align: center;
 }
 
 
@@ -101,14 +100,14 @@ p {
     }
 
     .login-header {
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
         display: flex;
         flex-direction: column;
-        align-items: self-start;
+        align-items: left;
     }
 
     .login-header h2 {
         font-weight: 700;
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
 }

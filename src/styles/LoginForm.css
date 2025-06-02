@@ -25,6 +25,10 @@
     margin-bottom: 1.25rem;
 }
 
+.login-header p {
+    text-align: left;
+}
+
 .login-form .form-group {
     margin-bottom: 1rem;
 }
