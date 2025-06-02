@@ -78,11 +78,32 @@ export default function LoginForm() {
 
             <div className="demo-credentials">
                 <p>Credenciales de prueba:</p>
-                <ul>
-                    <li><strong>Admin:</strong> admin@test.com / admin123</li>
-                    <li><strong>Usuario:</strong> juan@test.com / user123</li>
-                    <li><strong>Usuario:</strong> maria@test.com / user123</li>
-                </ul>
+                <table className="demo-table">
+                    <thead>
+                        <tr>
+                            <th>Rol</th>
+                            <th>Mail</th>
+                            <th>Contraseña</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Admin</strong></td>
+                            <td>admin@test.com</td>
+                            <td>admin123</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Usuario</strong></td>
+                            <td>juan@test.com</td>
+                            <td>user123</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Usuario</strong></td>
+                            <td>maria@test.com</td>
+                            <td>user123</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     )

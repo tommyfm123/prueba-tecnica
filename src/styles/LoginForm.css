@@ -113,12 +113,13 @@
     padding: 1rem;
     border-radius: 10px;
     font-size: 0.875rem;
+    overflow-x: auto;
 }
 
 /* Desktop Enhancements */
 @media (min-width: 640px) {
     .login-card {
-        max-width: 400px;
+        max-width: 600px;
         padding: 2rem;
     }
 
@@ -133,4 +134,37 @@
     .demo-credentials {
         font-size: 0.9rem;
     }
+}
+
+.demo-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.demo-table th,
+.demo-table td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.875rem;
+}
+
+.demo-table th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+}
+
+/* Desktop Enhancements */
+@media (min-width: 640px) {
+
+    .demo-table th,
+    .demo-table td {
+        font-size: 0.95rem;
+        padding: 0.75rem 1rem;
+    }
+}
+
+.demo-credentials table {
+    min-width: 100%;
 }
