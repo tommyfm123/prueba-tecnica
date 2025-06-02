@@ -1,4 +1,4 @@
-# README.txt
+# Intrucciones de uso
 
 Hola, esta es la prueba tecnica hecho con React!
 
