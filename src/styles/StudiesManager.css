@@ -58,13 +58,13 @@
 .study-card {
     border: 1px solid #ddd;
     border-radius: 10px;
-    padding: 2rem;
+    padding: 1.5rem;
     background: #ffffff;
     display: flex;
     flex-direction: column;
     gap: 1rem;
     justify-content: start;
-    align-items: start;
+    /* align-items: center; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.065);
 }
 
