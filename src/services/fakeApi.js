@@ -9,15 +9,15 @@ const mockUsers = [
     },
     {
         id: "2",
-        name: "Juan Pérez",
-        email: "juan@test.com",
+        name: "Tomas Fernandez",
+        email: "tomas@user.com",
         password: "user123",
         role: "user",
     },
     {
         id: "3",
         name: "María García",
-        email: "maria@test.com",
+        email: "maria@user.com",
         password: "user123",
         role: "user",
     },
@@ -26,16 +26,16 @@ const mockUsers = [
 // Simulamos una lista de estudios
 const mockStudies = [
     { id: "1", userId: "2", title: "Ingeniería en Sistemas", institution: "Universidad Nacional", year: 2020 },
-    { id: "2", userId: "2", title: "Curso React", institution: "Platzi", year: 2023 },
+    { id: "2", userId: "2", title: "Curso React", institution: "Udemy", year: 2023 },
     { id: "3", userId: "3", title: "Licenciatura en Administración", institution: "Universidad Central", year: 2019 },
 ]
 
 // Simulamos una lista de direcciones
 
 const mockAddresses = [
-    { id: "1", userId: "2", street: "Calle 123 #45-67", city: "Bogotá", country: "Colombia", type: "Casa" },
-    { id: "2", userId: "2", street: "Carrera 15 #30-25", city: "Bogotá", country: "Colombia", type: "Trabajo" },
-    { id: "3", userId: "3", street: "Avenida 68 #25-30", city: "Medellín", country: "Colombia", type: "Casa" },
+    { id: "1", userId: "2", street: "Avenida Peron", city: "Tucuman", country: "Argentina", type: "Casa" },
+    { id: "2", userId: "2", street: "Solano Vera", city: "Tucuman", country: "Argentina", type: "Trabajo" },
+    { id: "3", userId: "3", street: "Avenida Mate de Luna", city: "Tucuman", country: "Argentina", type: "Casa" },
 ]
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms)) // esta funcion simula un "retraso" en las respuestas de la API para que parezca una llamada real

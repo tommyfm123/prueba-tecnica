@@ -94,12 +94,12 @@ export default function LoginForm() {
                         </tr>
                         <tr>
                             <td><strong>Usuario</strong></td>
-                            <td>juan@test.com</td>
+                            <td>tomas@user.com</td>
                             <td>user123</td>
                         </tr>
                         <tr>
                             <td><strong>Usuario</strong></td>
-                            <td>maria@test.com</td>
+                            <td>maria@user.com</td>
                             <td>user123</td>
                         </tr>
                     </tbody>
