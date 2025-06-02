@@ -8,7 +8,7 @@
 }
 
 .container {
-    padding: 1rem;
+    padding: .8rem;
     display: flex;
     align-items: center;
     justify-content: space-between;

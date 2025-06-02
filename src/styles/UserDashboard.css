@@ -76,6 +76,8 @@
 
     .tabs {
         flex-direction: row;
+        justify-content: start;
+
     }
 
     .user-addresses-wrapper .address-card {
