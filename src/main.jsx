@@ -9,7 +9,7 @@ import "./styles/globals.css"
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider> {/* 👈 Aquí va el envoltorio */}
+      <AuthProvider>
         <App />
       </AuthProvider>
     </BrowserRouter>

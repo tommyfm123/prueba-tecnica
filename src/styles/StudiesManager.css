@@ -1,18 +1,23 @@
+/* Contenedor principal */
 .studies-manager {
     margin-top: 1rem;
 }
 
+/* Header con título y botón agregar */
 .header {
     display: flex;
-
+    flex-direction: column;
     margin-bottom: 1rem;
+    gap: 0.5rem;
+    background-color: transparent;
 }
 
-/* titulo estudios */
 .header h3 {
     font-size: 1rem;
+    margin: 0;
 }
 
+/* Formulario para agregar o editar estudio */
 .study-form {
     display: flex;
     flex-direction: column;
@@ -21,64 +26,22 @@
     background-color: #ffffff;
     padding: 2rem;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.study-form h4 {
+    margin: 0 0 1rem 0;
+}
+
 .study-form input {
-    padding: 0.5rem;
-    padding-left: 1rem;
+    padding: 0.5rem 1rem;
     border: 1px solid #ccc;
     border-radius: 10px;
+    font-size: 1rem;
 }
 
-.form-actions {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.study-list {
-    display: grid;
-    gap: 1rem;
-}
-
-.study-card {
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #ffffff;
-}
-
-.study-card h4 {
-    margin: 0 0 0.25rem;
-}
-
-.actions {
-    display: flex;
-}
-
-.actions button {
-    width: 100%;
-    padding: 0.3rem 1rem;
-}
-
-.btn-Add {
-    display: flex;
-    gap: 10px;
-    background-color: #3da33d;
-    border: none;
-    color: white;
-    border-radius: 8px;
-    margin-bottom: .5rem;
-}
-
-.btn-Add:hover {
-    background-color: #309930;
-}
-
+/* Acciones dentro del formulario: botones guardar/actualizar y cancelar */
 .form-actions {
     display: flex;
     gap: 12px;
@@ -86,39 +49,60 @@
     justify-content: flex-end;
 }
 
-.form-actions button {
-    padding: 10px 18px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: 1.5px solid transparent;
-    cursor: pointer;
-    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-    font-weight: 600;
-    min-width: 100px;
+
+
+/* Lista de estudios */
+.study-list {
+    display: grid;
+    gap: 1rem;
 }
 
-/* Botón principal (submit) */
-.form-actions button[type="submit"] {
-    background-color: #007aff;
-    /* Azul Apple */
-    color: white;
-    border-color: #007aff;
+/* Tarjeta individual de estudio */
+.study-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 2rem;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.065);
 }
 
-.form-actions button[type="submit"]:hover {
-    background-color: #005bb5;
-    border-color: #005bb5;
+.study-card h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
 }
 
-/* Botón secundario (cancelar) */
-.form-actions button[type="button"] {
-    background-color: transparent;
-    color: #007aff;
-    border: 1.5px solid #007aff;
+.study-card p {
+    margin: 0;
+    color: #555;
 }
 
-.form-actions button[type="button"]:hover {
-    background-color: #e6f0ff;
-    border-color: #005bb5;
-    color: #005bb5;
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Media Query para pantallas ≥ 768px */
+@media (min-width: 768px) {
+    .header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        background-color: transparent;
+        gap: 0;
+    }
+
+    .study-card {
+        flex-direction: row;
+        /* fila en desktop */
+        align-items: center;
+    }
+
+    .actions {
+        gap: 12px;
+    }
 }

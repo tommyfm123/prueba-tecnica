@@ -5,6 +5,7 @@ import StudiesManager from "../components/StudiesManager"
 import AddressesManager from "../components/AddressesManager"
 import { Users, Plus, GraduationCap, MapPinHouse } from "lucide-react"
 import "../styles/AdminDashboard.css"
+import Button from "../components/ui/Button"
 
 export default function AdminDashboard() {
     const { user } = useAuth() // traemos los datos del usuario logueado desde el contexto de autenticación
@@ -80,14 +81,14 @@ export default function AdminDashboard() {
                 <div className="user-list">
                     <div className="user-list-header">
                         <div className="containerUser">
-                            <h2><Users />Usuarios</h2>
-                            <button className="btn-add" onClick={() => setShowForm(true)}><Plus />Nuevo</button>
+                            <h2><Users /> Usuarios</h2>
+                            <Button variant="primary" icon={Plus} onClick={() => setShowForm(true)}>Nuevo</Button>
                         </div>
                         <p>Gestiona todos los usuarios del sistema</p>
                     </div>
 
                     {showForm && (
-                        <form onSubmit={handleCreateUser} className="user-form" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        <form onSubmit={handleCreateUser} className="user-form">
                             <input
                                 type="text"
                                 placeholder="Nombre"
@@ -117,21 +118,21 @@ export default function AdminDashboard() {
                                 <option value="admin">Administrador</option>
                             </select>
                             <div className="containerBtn" style={{ display: 'flex', gap: '10px' }}>
-                                <button type="submit">Crear Usuario</button>
-                                <button type="button" onClick={() => setShowForm(false)}>Cancelar</button>
+                                <Button variant="primary" type="submit">Crear Usuario</Button>
+                                <Button variant="secondary" type="button" onClick={() => setShowForm(false)}>Cancelar</Button>
                             </div>
                         </form>
                     )}
 
                     <div className="user-items">
-                        {users.map(user => (
+                        {users.map(u => (
                             <div
-                                key={user.id}
-                                className={`user-item ${selectedUser?.id === user.id ? "active" : ""}`}
-                                onClick={() => setSelectedUser(user)}
+                                key={u.id}
+                                className={`user-item ${selectedUser?.id === u.id ? "active" : ""}`}
+                                onClick={() => setSelectedUser(u)}
                             >
-                                <p><strong>{user.name}</strong> ({user.role})</p>
-                                <p className="email">{user.email}</p>
+                                <p className="nombre"><strong>{u.name}</strong></p>
+                                <p className="email">{u.email}</p>
                             </div>
                         ))}
                     </div>
@@ -140,35 +141,30 @@ export default function AdminDashboard() {
                 <div className="user-detail">
                     {selectedUser ? (
                         <>
-                            <h2>Datos de {selectedUser.name} <span className="tag">{selectedUser.role}</span></h2>
+                            <h2>Datos de {selectedUser.name}</h2>
+                            <span className="tag">{selectedUser.role}</span>
                             <p>{selectedUser.email}</p>
 
                             <div className="tabs">
-                                <button
-                                    className={`tab-btn ${selectedTab === "studies" ? "active" : ""}`}
+                                <Button
+                                    variant="secondary"
+                                    active={selectedTab === "studies"}
                                     onClick={() => setSelectedTab("studies")}
                                 >
                                     <GraduationCap /> Estudios
-                                </button>
-                                <button
-                                    className={`tab-btn ${selectedTab === "addresses" ? "active" : ""}`}
+                                </Button>
+                                <Button
+                                    variant="secondary"
+                                    active={selectedTab === "addresses"}
                                     onClick={() => setSelectedTab("addresses")}
                                 >
                                     <MapPinHouse /> Direcciones
-                                </button>
+                                </Button>
                             </div>
 
                             <div className="tab-content">
-                                {selectedTab === "studies" && (
-                                    <>
-                                        <StudiesManager userId={selectedUser.id} isAdmin={true} />
-                                    </>
-                                )}
-                                {selectedTab === "addresses" && (
-                                    <>
-                                        <AddressesManager userId={selectedUser.id} isAdmin={true} />
-                                    </>
-                                )}
+                                {selectedTab === "studies" && <StudiesManager userId={selectedUser.id} isAdmin={true} />}
+                                {selectedTab === "addresses" && <AddressesManager userId={selectedUser.id} isAdmin={true} />}
                             </div>
                         </>
                     ) : (

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 import { mockApi } from "../services/fakeApi"
-import "../styles/StudiesManager.css" // Asegúrate de tener este archivo CSS
+import "../styles/StudiesManager.css"
 import { Plus } from "lucide-react"
-
+import Button from "../components/ui/Button"
 
 export default function StudiesManager({ userId, isAdmin }) {
     const [studies, setStudies] = useState([])
@@ -15,12 +15,10 @@ export default function StudiesManager({ userId, isAdmin }) {
         year: new Date().getFullYear(),
     })
 
-    // Carga los estudios del usuario al montar el componente
     useEffect(() => {
         loadStudies()
     }, [userId])
 
-    // Función para obtener todos los estudios del usuario desde la API simulada
     const loadStudies = async () => {
         try {
             const studiesData = await mockApi.getStudies(userId)
@@ -32,30 +30,25 @@ export default function StudiesManager({ userId, isAdmin }) {
         }
     }
 
-
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         try {
             if (editingId) {
-                // En caso de haber ID, se actualiza un estudio existente
                 const updated = await mockApi.updateStudy(editingId, formData)
                 setStudies(studies.map((s) => (s.id === editingId ? updated : s)))
                 setEditingId(null)
+                setShowForm(false)  // <--- Agregar aquí para ocultar el formulario
             } else {
-                // Si no hay id, se crea un nuevo estudio
                 const newStudy = await mockApi.createStudy({ ...formData, userId })
                 setStudies([...studies, newStudy])
                 setShowForm(false)
             }
-            // Con esto reiniciamos el formulario
             setFormData({ title: "", institution: "", year: new Date().getFullYear() })
         } catch (error) {
             console.error("Error guardando estudio:", error)
         }
     }
 
-    // Esto carga los datos del estudio a editar en el formulario
     const handleEdit = (study) => {
         setFormData({
             title: study.title,
@@ -63,9 +56,9 @@ export default function StudiesManager({ userId, isAdmin }) {
             year: study.year,
         })
         setEditingId(study.id)
+        setShowForm(true)
     }
 
-    // Elimina un estudio y actualiza la lista
     const handleDelete = async (id) => {
         if (confirm("¿Eliminar este estudio?")) {
             try {
@@ -77,10 +70,10 @@ export default function StudiesManager({ userId, isAdmin }) {
         }
     }
 
-    // Cancela la edición y resetea el formulario
     const cancelEdit = () => {
         setEditingId(null)
         setFormData({ title: "", institution: "", year: new Date().getFullYear() })
+        setShowForm(false)
     }
 
     if (loading) return <p>Cargando estudios...</p>
@@ -89,7 +82,9 @@ export default function StudiesManager({ userId, isAdmin }) {
         <div className="studies-manager">
             <div className="header">
                 <h3>Estudios</h3>
-                <button className="btn-Add" onClick={() => setShowForm(true)}><Plus /> Agregar Estudio</button>
+                <Button variant="primary" icon={Plus} onClick={() => setShowForm(true)}>
+                    Agregar Estudio
+                </Button>
             </div>
 
             {(showForm || editingId) && (
@@ -115,33 +110,42 @@ export default function StudiesManager({ userId, isAdmin }) {
                         placeholder="Año"
                         value={formData.year}
                         pattern="[0-9]*"
-                        inputmode="numeric"
+                        inputMode="numeric"
                         onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
                         min="1950"
                         max="2030"
                         required
                     />
                     <div className="form-actions">
-                        <button type="submit">{editingId ? "Actualizar" : "Guardar"}</button>
-                        <button type="button" onClick={() => { setShowForm(false); cancelEdit() }}>
+                        <Button type="submit" variant="primary" >
+                            {editingId ? "Actualizar" : "Guardar"}
+                        </Button>
+                        <Button type="button" variant="secondary" onClick={cancelEdit}>
                             Cancelar
-                        </button>
+                        </Button>
                     </div>
                 </form>
             )}
+
             <div className="study-list">
                 {studies.length === 0 ? (
                     <p>{isAdmin ? "Este usuario no tiene estudios registrados." : "No tenés estudios registrados."}</p>
                 ) : (
                     studies.map((study) => (
-                        <div key={study.id} className="study-card">
+                        <div key={study.id} className="study-card user-dashboard">
                             <div>
                                 <h4>{study.title}</h4>
-                                <p>{study.institution} - {study.year}</p>
+                                <p>
+                                    {study.institution} - {study.year}
+                                </p>
                             </div>
                             <div className="actions">
-                                <button onClick={() => handleEdit(study)}>Editar</button>
-                                <button onClick={() => handleDelete(study.id)}>Eliminar</button>
+                                <Button variant="primary" onClick={() => handleEdit(study)}>
+                                    Editar
+                                </Button>
+                                <Button variant="secondary" onClick={() => handleDelete(study.id)}>
+                                    Eliminar
+                                </Button>
                             </div>
                         </div>
                     ))

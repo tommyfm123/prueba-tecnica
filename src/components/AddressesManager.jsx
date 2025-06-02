@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { mockApi } from "../services/fakeApi"
 import "../styles/AddressesManager.css"
 import { Plus } from "lucide-react"
+import Button from "../components/ui/Button"
 
 export default function AddressesManager({ userId, isAdmin }) {
     const [addresses, setAddresses] = useState([])
@@ -83,38 +84,44 @@ export default function AddressesManager({ userId, isAdmin }) {
         <div className="addresses-manager">
             <div className="header">
                 <h3>Direcciones</h3>
-                <button className="btn-add" onClick={() => setShowForm(true)}><Plus /> Agregar Dirección</button>
+                <Button
+                    variant="primary"
+                    onClick={() => setShowForm(true)}
+                    icon={Plus}
+                >
+                    Agregar Dirección
+                </Button>
             </div>
 
             {(showForm || editingId) && (
                 <form onSubmit={handleSubmit} className="form">
                     <h4>{editingId ? "Editar Dirección" : "Agregar Dirección"}</h4>
                     <label>
-                        Dirección:
                         <input
                             value={formData.street}
                             onChange={(e) => setFormData({ ...formData, street: e.target.value })}
                             required
+                            placeholder="Dirección"
                         />
                     </label>
                     <label>
-                        Ciudad:
                         <input
                             value={formData.city}
                             onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                             required
+                            placeholder="Ciudad"
                         />
                     </label>
                     <label>
-                        País:
                         <input
                             value={formData.country}
                             onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                             required
+                            placeholder="País"
                         />
                     </label>
                     <label>
-                        Tipo:
+                        Tipo de Dirección
                         <select
                             value={formData.type}
                             onChange={(e) => setFormData({ ...formData, type: e.target.value })}
@@ -125,8 +132,19 @@ export default function AddressesManager({ userId, isAdmin }) {
                         </select>
                     </label>
                     <div className="form-buttons">
-                        <button type="submit">{editingId ? "Actualizar" : "Guardar"}</button>
-                        <button type="button" onClick={() => { setShowForm(false); resetForm() }}>Cancelar</button>
+                        <Button type="submit" variant="primary">
+                            {editingId ? "Actualizar" : "Guardar"}
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={() => {
+                                setShowForm(false)
+                                resetForm()
+                            }}
+                        >
+                            Cancelar
+                        </Button>
                     </div>
                 </form>
             )}
@@ -140,13 +158,23 @@ export default function AddressesManager({ userId, isAdmin }) {
                     {addresses.map((address) => (
                         <div key={address.id} className="address-card">
                             <div className="address-info">
-                                <strong>{address.street}</strong>
+                                <h4>{address.street}</h4>
                                 <p>{address.city}, {address.country}</p>
                                 <span className="tag">{address.type}</span>
                             </div>
                             <div className="actions">
-                                <button onClick={() => handleEdit(address)}>Editar</button>
-                                <button onClick={() => handleDelete(address.id)} className="delete">Eliminar</button>
+                                <Button
+                                    variant="primary"
+                                    onClick={() => handleEdit(address)}
+                                >
+                                    Editar
+                                </Button>
+                                <Button
+                                    variant="danger"
+                                    onClick={() => handleDelete(address.id)}
+                                >
+                                    Eliminar
+                                </Button>
                             </div>
                         </div>
                     ))}

@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useAuth } from "../context/AuthContext"
 import StudiesManager from "../components/StudiesManager"
 import AddressesManager from "../components/AddressesManager"
+import Button from "../components/ui/Button" // botón reutilizable
 import "../styles/UserDashboard.css"
 
 export default function UserDashboard() {
@@ -28,18 +29,18 @@ export default function UserDashboard() {
             <p>Gestiona tu información personal</p>
 
             <div className="tabs">
-                <button
-                    className={activeTab === "studies" ? "active" : ""}
+                <Button
+                    className={`tab-btn ${activeTab === "studies" ? "active" : ""}`}
                     onClick={() => setActiveTab("studies")}
                 >
                     Mis Estudios
-                </button>
-                <button
-                    className={activeTab === "addresses" ? "active" : ""}
+                </Button>
+                <Button
+                    className={`tab-btn ${activeTab === "addresses" ? "active" : ""}`}
                     onClick={() => setActiveTab("addresses")}
                 >
                     Mis Direcciones
-                </button>
+                </Button>
             </div>
 
             <div className="tab-content">

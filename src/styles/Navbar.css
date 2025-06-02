@@ -1,0 +1,191 @@
+.navbar {
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    position: relative;
+    /* importante para que el mobile-menu absoluto se posicione respecto al header */
+    z-index: 10;
+    padding: 0 1rem;
+}
+
+.container {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: #111;
+}
+
+/* Menu Hamburguesa */
+
+.desktop-nav {
+    display: none;
+}
+
+.hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+    position: relative;
+}
+
+.hamburger span {
+    height: 2px;
+    width: 100%;
+    background-color: #333;
+    border-radius: 2px;
+    transition: 0.2s ease;
+    transform-origin: center;
+}
+
+
+/* Animación de abrir y cerrar menu */
+
+.hamburger.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Estilos del menu en vista MOBILE */
+
+.mobile-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: white;
+    border-top: 1px solid #e0e0e0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: all 0.2s ease-in-out;
+    box-sizing: border-box;
+    /* para que el padding no aumente el ancho */
+    z-index: 1000;
+    padding: 1.3rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-menu.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.main {
+    margin: 2rem auto;
+}
+
+/* CHIP que muestra si es ADMIN o USER */
+.role-chip {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    width: min-content;
+    border-radius: 999px;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.role-chip.admin {
+    background-color: #e6f0ff;
+    color: #1a56db;
+    border: 1px solid #b3d1ff;
+}
+
+.role-chip.user {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.username {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.logout {
+    background: #f3f3f3;
+    border: 1px solid #ccc;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    transition: background 0.2s ease;
+}
+
+.logout:hover {
+    background: #e6e6e6;
+}
+
+/* animaciones con keyframes */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* MEDIA QUERIES */
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .desktop-nav {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .hamburger {
+        display: none;
+    }
+
+    .mobile-menu {
+        display: none !important;
+    }
+
+    .main {
+        max-width: 1200px;
+    }
+}

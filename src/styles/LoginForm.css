@@ -1,38 +1,38 @@
-/* Login Page Styles */
-
+/* Login Page Styles (Mobile First) */
 .login-page {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    padding: 1rem;
     background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    position: relative;
 }
-
-/* Login Form Styles */
-
 
 .login-card {
     width: 100%;
-    max-width: 400px;
-    margin: auto;
-    padding: 2rem;
+    max-width: 100%;
+    padding: 1.5rem;
     background: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
+
 
 .login-header {
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .login-header h2 {
-    font-size: 24px;
+    font-size: 1.5rem;
     margin-bottom: 0.5rem;
 }
 
 .login-header p {
     color: #666;
+    font-size: 0.9rem;
 }
 
 .login-form .form-group {
@@ -41,18 +41,24 @@
 
 .login-form label {
     display: block;
-    margin-bottom: .8rem;
+    margin-bottom: 0.5rem;
     font-weight: bold;
 }
 
 .login-form input {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
     font-size: 1rem;
-    box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 10px;
-    padding-left: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-form input:focus {
+    border-color: #212121;
+    box-shadow: 0 0 0 2px rgba(33, 33, 33, 0.2);
+    outline: none;
 }
 
 .password-wrapper {
@@ -62,7 +68,7 @@
 .toggle-password {
     position: absolute;
     right: 10px;
-    top: 0px;
+    top: 0;
     bottom: 0;
     background: none;
     border: none;
@@ -72,7 +78,7 @@
 
 .login-error {
     color: red;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     margin-bottom: 1rem;
 }
 
@@ -85,6 +91,15 @@
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.login-button:hover:not(:disabled) {
+    background: #111;
+    transform: translateY(-1px);
 }
 
 .login-button:disabled {
@@ -98,4 +113,24 @@
     padding: 1rem;
     border-radius: 10px;
     font-size: 0.875rem;
+}
+
+/* Desktop Enhancements */
+@media (min-width: 640px) {
+    .login-card {
+        max-width: 400px;
+        padding: 2rem;
+    }
+
+    .login-header h2 {
+        font-size: 1.75rem;
+    }
+
+    .login-header p {
+        font-size: 1rem;
+    }
+
+    .demo-credentials {
+        font-size: 0.9rem;
+    }
 }

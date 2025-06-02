@@ -19,14 +19,14 @@
     background: #ffffff;
     border: 1px solid #ddd;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: .5rem 0;
+    padding: 0.5rem 0;
     border-radius: 10px;
     flex: 1;
 }
 
 .stat-box h3 {
     font-size: 1.2rem;
-    padding-top: .5rem;
+    padding-top: 0.5rem;
     font-weight: 500;
     user-select: none;
     color: #333;
@@ -34,12 +34,11 @@
 
 .stat-box p {
     font-size: 1rem;
-    padding-top: 0rem;
+    padding-top: 0;
     font-weight: normal;
     user-select: none;
     color: #616161;
 }
-
 
 /* Sección principal */
 .main-section {
@@ -58,18 +57,16 @@
 }
 
 .user-list-header {
-    padding-top: .6rem;
+    padding-top: 0.6rem;
     display: flex;
     flex-direction: column;
-    display: flex;
     align-items: center;
     font-size: 1rem;
     gap: 10px;
-
 }
 
 .user-list-header p {
-    font-size: .9rem;
+    font-size: 0.9rem;
     margin-top: 0;
     padding-top: 0;
     color: #7b7979;
@@ -96,55 +93,17 @@
     margin: 0;
 }
 
-
-.tab-btn {
-    background-color: #f0f0f0;
-    border: none;
-    padding: 10px 16px;
-    margin-right: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 500;
-    transition: background 0.3s;
-}
-
-.tab-btn:hover {
-    background-color: #e0e0e0;
-}
-
-.tab-btn.active {
-    background-color: #007bff;
-    color: white;
-}
-
-
-/* boton agregar */
-.btn-add {
-    display: flexs;
-    gap: 10px;
-    background-color: #3da33d;
-    border: none;
-    color: white;
-    border-radius: 10px;
-    margin-bottom: .5rem;
-}
-
-.btn-add:hover {
-    background-color: #3da33d;
-}
-
 .user-item {
-    padding: 0.2rem 1rem;
-    margin: 0.5rem 0;
+    padding: .8rem 1rem;
+    margin: 1rem 0;
     border: 1px solid #eee;
     border-radius: 10px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.051);
 }
 
 .user-item:hover {
@@ -157,15 +116,24 @@
 
 .user-item .email {
     font-size: 0.85rem;
+    margin: 0;
     color: #555;
+}
+
+.user-item .nombre {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
 }
 
 /* Detalle de usuario - container */
 .user-detail {
     background: #ffffff;
     border: 1px solid #ddd;
-    padding: 2rem;
-    border-radius: 6px;
+    padding: 2rem 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .user-detail p {
@@ -176,10 +144,8 @@
 
 .user-detail h2 {
     font-size: 1.5rem;
-
     color: #333;
 }
-
 
 .user-detail .SelectData {
     display: flex;
@@ -187,67 +153,19 @@
     height: 100%;
     color: #7b7979;
     user-select: none;
-    display: flex;
-    justify-content: center;
     align-items: center;
 
 }
 
 
-/* Estilos base para todos los botones */
-button {
-    background: transparent;
-    border: 2px solid #ccc;
-    padding: 8px 16px;
-    margin-right: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    border-radius: 6px;
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-    color: #333;
-}
-
-/* Hover para todos */
-button:hover {
-    background-color: #f0f0f0;
-    border-color: #999;
-}
-
-/* Estilo para el botón activo */
-button.active {
-    background-color: #0070f3;
-    border-color: #0070f3;
-    color: white;
-}
-
-/* Opcional: estilo para los íconos (GraduationCap, MapPinHouse) */
-button svg {
-    width: 18px;
-    height: 18px;
-}
-
-
-
-/*  estilos formulario */
-
-
-.user-form input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    margin-bottom: .5rem;
-}
-
+/* estilos formulario */
+.user-form input,
 .user-form select {
     width: 100%;
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 6px;
-    margin-bottom: 1rem;
+    margin-bottom: .7rem;
 }
 
 .containerBtn {
@@ -255,65 +173,11 @@ button svg {
     justify-content: center;
     gap: 10px;
     width: 100%;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #dddddd5e;
 }
 
-
-/* boton para crear ususario y cancelar */
-.containerBtn {
-    display: flex;
-    gap: 10px;
-}
-
-.containerBtn button {
-    flex: 1;
-    /* ambos botones toman el mismo ancho */
-    background-color: white;
-    border: 1px solid #ccc;
-    color: #111;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    margin-bottom: 1rem;
-}
-
-/* Hover suave para ambos botones */
-.containerBtn button:hover {
-    background-color: #f5f5f5;
-    border-color: #999;
-}
-
-/* Opcional: Diferenciar botón de cancelar con color más tenue */
-.containerBtn button[type="button"] {
-    color: #666;
-    border-color: #ddd;
-}
-
-.containerBtn button[type="button"]:hover {
-    background-color: #eaeaea;
-    border-color: #ccc;
-}
-
-/* Para el botón submit puedes dejar color primario si quieres */
-.containerBtn button[type="submit"] {
-    background-color: #0070f3;
-    color: white;
-    border-color: #0070f3;
-}
-
-.containerBtn button[type="submit"]:hover {
-    background-color: #005bb5;
-    border-color: #005bb5;
-}
-
-
-
+/* Desktop */
 @media (min-width: 768px) {
     .stats {
         flex-direction: row;
@@ -331,5 +195,6 @@ button svg {
 
     .user-detail {
         flex: 1;
+        padding: 2rem;
     }
 }
