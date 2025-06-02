@@ -4,6 +4,8 @@ import StudiesManager from "../components/StudiesManager"
 import AddressesManager from "../components/AddressesManager"
 import Button from "../components/ui/Button" // botón reutilizable
 import "../styles/UserDashboard.css"
+import { Users, Plus, GraduationCap, MapPinHouse } from "lucide-react"
+
 
 export default function UserDashboard() {
     const { user } = useAuth()
@@ -25,25 +27,27 @@ export default function UserDashboard() {
                 </div>
             </div>
 
-            <h2>Mis Datos</h2>
-            <p>Gestiona tu información personal</p>
-
-            <div className="tabs">
-                <Button
-                    className={`tab-btn ${activeTab === "studies" ? "active" : ""}`}
-                    onClick={() => setActiveTab("studies")}
-                >
-                    Mis Estudios
-                </Button>
-                <Button
-                    className={`tab-btn ${activeTab === "addresses" ? "active" : ""}`}
-                    onClick={() => setActiveTab("addresses")}
-                >
-                    Mis Direcciones
-                </Button>
-            </div>
-
             <div className="tab-content">
+                <div className="tabs">
+                    <div className="User-data">
+                        <h2>Mis Datos</h2>
+                        <p>Gestiona tu información personal</p>
+                    </div>
+                    <Button
+                        variant="secondary"
+                        active={activeTab === "studies"}
+                        onClick={() => setActiveTab("studies")}
+                    >
+                        <GraduationCap /> Mis Estudios
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        active={activeTab === "addresses"}
+                        onClick={() => setActiveTab("addresses")}
+                    >
+                        <MapPinHouse /> Mis Direcciones
+                    </Button>
+                </div>
                 {activeTab === "studies" && (
                     <StudiesManager userId={user.id} isAdmin={false} />
                 )}
