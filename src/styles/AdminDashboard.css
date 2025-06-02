@@ -166,7 +166,7 @@ h2 {
 }
 
 /* Desktop */
-@media (min-width: 768px) {
+@media (min-width: 1000px) {
     .stats {
         flex-direction: row;
     }
