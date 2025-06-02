@@ -13,6 +13,7 @@ export default function LoginForm() {
 
     const navigate = useNavigate()
 
+    // Maneja el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError("")
@@ -23,7 +24,7 @@ export default function LoginForm() {
         if (!success) {
             setError("Credenciales inválidas. Intenta de nuevo.")
         } else {
-            navigate("/dashboard")
+            navigate("/dashboard") // Con esto se redirige al usuario al dashboard después de iniciar sesión
         }
 
     }

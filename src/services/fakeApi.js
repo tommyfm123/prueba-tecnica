@@ -74,7 +74,7 @@ export const mockApi = {
     async getUsers() {
         const response = await fetch("/mock-users.json")
         if (!response.ok) throw new Error("Error cargando usuarios")
-        console.log("Usuarios cargados desde mock-users.json") // esto confirma desde la consola que los datos se están cargando correctamente desde mock-users.json. Se puede eliminar en producción.
+        // console.log("Usuarios cargados desde mock-users.json") 
         const data = await response.json()
         return data
     },

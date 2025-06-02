@@ -23,9 +23,12 @@ export default function AddressesManager({ userId }) {
     const role = user?.role || "usuario"
     const isAdmin = role.toLowerCase() === "admin"
 
+    // Usamos UseEffect para cargar las direcciones al montar el componente
     useEffect(() => {
         loadAddresses()
     }, [userId])
+
+    // funcion para cargar las direcciones del usuario
 
     const loadAddresses = async () => {
         try {
@@ -37,6 +40,8 @@ export default function AddressesManager({ userId }) {
             setLoading(false)
         }
     }
+
+    // funcion para manejar el submit del formulario
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -57,6 +62,8 @@ export default function AddressesManager({ userId }) {
         }
     }
 
+    // funcion para editar una dirección ya existente
+
     const handleEdit = (address) => {
         setFormData({
             street: address.street,
@@ -66,6 +73,8 @@ export default function AddressesManager({ userId }) {
         })
         setEditingId(address.id)
     }
+
+    // funcion para eliminar una dirección
 
     const handleDelete = async (id) => {
         if (window.confirm("¿Estás seguro de que quieres eliminar esta dirección?")) {
@@ -77,6 +86,8 @@ export default function AddressesManager({ userId }) {
             }
         }
     }
+
+    // funcion para resetear el formulario
 
     const resetForm = () => {
         setEditingId(null)

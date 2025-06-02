@@ -23,11 +23,13 @@ export default function AdminDashboard() {
     })
 
     // Esto carga a los usuarios al montar el componente
+
     useEffect(() => {
         loadUsers()
     }, [])
 
     // Función para obtener usuarios desde la API simulada
+
     const loadUsers = async () => {
         try {
             const usersData = await mockApi.getUsers()

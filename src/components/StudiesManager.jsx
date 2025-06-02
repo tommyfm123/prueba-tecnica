@@ -16,10 +16,12 @@ export default function StudiesManager({ userId, isAdmin }) {
         year: new Date().getFullYear(),
     })
 
+    // Usamos useEffect para cargar los estudios al montar el componente
     useEffect(() => {
         loadStudies()
     }, [userId])
 
+    // Función para cargar los estudios del usuario
     const loadStudies = async () => {
         try {
             const studiesData = await mockApi.getStudies(userId)
@@ -30,6 +32,8 @@ export default function StudiesManager({ userId, isAdmin }) {
             setLoading(false)
         }
     }
+
+    // Función para manejar el submit del formulario
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -50,6 +54,7 @@ export default function StudiesManager({ userId, isAdmin }) {
         }
     }
 
+    // Funciones para manejar editar y eliminar estudios
     const handleEdit = (study) => {
         setFormData({
             title: study.title,
@@ -59,6 +64,8 @@ export default function StudiesManager({ userId, isAdmin }) {
         setEditingId(study.id)
         setShowForm(true)
     }
+
+    // Función para eliminar un estudio
 
     const handleDelete = async (id) => {
         if (confirm("¿Eliminar este estudio?")) {
@@ -71,6 +78,7 @@ export default function StudiesManager({ userId, isAdmin }) {
         }
     }
 
+    // Función para cancelar la edición y resetear el formulario
     const cancelEdit = () => {
         setEditingId(null)
         setFormData({ title: "", institution: "", year: new Date().getFullYear() })
