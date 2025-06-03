@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useAuth } from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
-import "../styles/LoginForm.css" // Importa tu CSS para estilos personalizados
+import "../styles/LoginForm.css"
 
 export default function LoginForm() {
     const [email, setEmail] = useState("")

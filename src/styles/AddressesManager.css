@@ -92,7 +92,7 @@
     color: red;
 }
 
-/* ──────────────── Desktop breakpoint ──────────────── */
+
 @media (min-width: 768px) {
     .header {
         flex-direction: row;

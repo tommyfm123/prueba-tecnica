@@ -146,7 +146,7 @@ h2 {
 }
 
 
-/* estilos formulario */
+/* estilos del formulario */
 .user-form input,
 .user-form select {
     width: 100%;
@@ -165,7 +165,7 @@ h2 {
     border-bottom: 2px solid #dddddd5e;
 }
 
-/* Desktop */
+
 @media (min-width: 1000px) {
     .stats {
         flex-direction: row;

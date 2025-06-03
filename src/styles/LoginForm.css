@@ -1,4 +1,3 @@
-/* Login Page Styles (Mobile First) */
 .login-page {
     display: flex;
     justify-content: center;
@@ -110,7 +109,7 @@
     overflow-x: auto;
 }
 
-/* Desktop Enhancements */
+
 @media (min-width: 640px) {
     .login-card {
         max-width: 600px;
@@ -142,7 +141,7 @@
     font-weight: 600;
 }
 
-/* Desktop Enhancements */
+
 @media (min-width: 640px) {
 
     .demo-table th,

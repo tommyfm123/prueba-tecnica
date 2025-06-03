@@ -7,7 +7,6 @@
     box-sizing: border-box;
 }
 
-/* Base sizes - mobile first */
 h1 {
     font-size: 1.5rem;
     color: #111;
@@ -29,7 +28,6 @@ p {
     color: #333;
 }
 
-/* Specific color or margin overrides */
 
 .container h1 {
     font-weight: 600;
@@ -71,7 +69,7 @@ p {
 }
 
 
-/* Responsive upgrades: tablet and up */
+
 @media (min-width: 768px) {
     h1 {
         font-size: 2rem;

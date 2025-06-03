@@ -2,7 +2,6 @@
     background: #fff;
     border-bottom: 1px solid #e5e5e5;
     position: relative;
-    /* importante para que el mobile-menu absoluto se posicione respecto al header */
     z-index: 10;
     padding: 0 1rem;
 }

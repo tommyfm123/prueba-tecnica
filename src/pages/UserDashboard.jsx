@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext"
 import StudiesManager from "../components/StudiesManager"
 import { mockApi } from "../services/fakeApi"
 import AddressesManager from "../components/AddressesManager"
-import Button from "../components/ui/Button" // botón reutilizable
+import Button from "../components/ui/Button"
 import "../styles/UserDashboard.css"
 import { Users, Plus, GraduationCap, MapPinHouse, Edit } from "lucide-react"
 
