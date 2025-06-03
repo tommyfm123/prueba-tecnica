@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../styles/button.css'; // Asegurate de importar los estilos
+import '../../styles/button.css';
 import PropTypes from 'prop-types';
 
 const Button = ({ children, icon: Icon, onClick, active = false, type = 'button' }) => {
