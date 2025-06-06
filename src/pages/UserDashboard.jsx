@@ -1,38 +1,61 @@
-import { useState } from "react"
-import { useAuth } from "../context/AuthContext"
-import StudiesManager from "../components/StudiesManager"
-import { mockApi } from "../services/fakeApi"
-import AddressesManager from "../components/AddressesManager"
-import Button from "../components/ui/Button"
-import "../styles/UserDashboard.css"
-import { Users, Plus, GraduationCap, MapPinHouse, Edit } from "lucide-react"
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import StudiesManager from "../components/StudiesManager";
+import { mockApi } from "../services/fakeApi";
+import AddressesManager from "../components/AddressesManager";
+import Button from "../components/ui/Button";
+import "../styles/UserDashboard.css";
+import { GraduationCap, MapPinHouse, Edit } from "lucide-react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function UserDashboard() {
-    const { user, setUser } = useAuth()
-    const [activeTab, setActiveTab] = useState("studies")
-    const [editMode, setEditMode] = useState(false)
+    const { user, setUser } = useAuth();
+    const [activeTab, setActiveTab] = useState("studies");
+    const [editMode, setEditMode] = useState(false);
+    const [loading, setLoading] = useState(false); // 🔥 Nuevo estado de carga
     const [formData, setFormData] = useState({
         name: user.name,
         email: user.email,
         password: "",
-    })
+    });
+
+    const validateForm = () => {
+        if (!formData.name.trim() || !formData.email.trim()) {
+            toast.error("Por favor completa nombre y email.");
+            return false;
+        }
+
+        // Validación básica de email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            toast.error("Por favor ingresa un email válido.");
+            return false;
+        }
+
+        return true;
+    };
 
     const handleUpdateProfile = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+
+        if (!validateForm()) return;
+
+        setLoading(true); // 🔥 Empieza carga
         try {
-            const updatedUser = await mockApi.updateUser(user.id, formData)
-            // Solo actualizamos el contexto, ¡eso fuerza el re-render en todos los componentes!
-            setUser(updatedUser)
-            setEditMode(false)
+            const updatedUser = await mockApi.updateUser(user.id, formData);
+            setUser(updatedUser);
+            setEditMode(false);
+            toast.success("Perfil actualizado correctamente.");
         } catch (error) {
-            console.error("Error actualizando perfil:", error)
+            console.error("Error actualizando perfil:", error);
+            toast.error("Error al actualizar el perfil.");
+        } finally {
+            setLoading(false); // 🔥 Fin carga
         }
-    }
+    };
 
-
-
-
-    if (!user) return null
+    if (!user) return null;
 
     return (
         <div className="user-dashboard">
@@ -58,39 +81,42 @@ export default function UserDashboard() {
                     <input
                         type="text"
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        onChange={(e) =>
+                            setFormData({ ...formData, name: e.target.value })
+                        }
                         placeholder="Nombre"
-                        required
                     />
                     <input
                         type="email"
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) =>
+                            setFormData({ ...formData, email: e.target.value })
+                        }
                         placeholder="Email"
-                        required
                     />
                     <input
                         type="password"
                         value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        onChange={(e) =>
+                            setFormData({ ...formData, password: e.target.value })
+                        }
                         placeholder="Nueva contraseña (opcional)"
                     />
                     <div className="form-buttons">
-
-                        <Button type="submit" variant="secondary">
-                            Guardar
+                        <Button type="submit" variant="secondary" disabled={loading}>
+                            {loading ? "Guardando..." : "Guardar"}
                         </Button>
                         <Button
                             type="button"
                             variant="secondary"
                             onClick={() => setEditMode(false)}
+                            disabled={loading}
                         >
                             Cancelar
                         </Button>
                     </div>
                 </form>
             )}
-
 
             <div className="tab-content">
                 <div className="tabs">
@@ -121,5 +147,5 @@ export default function UserDashboard() {
                 )}
             </div>
         </div>
-    )
+    );
 }

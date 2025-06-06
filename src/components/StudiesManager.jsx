@@ -1,91 +1,109 @@
-import { useState, useEffect } from "react"
-import { mockApi } from "../services/fakeApi"
-import "../styles/StudiesManager.css"
-import { Plus } from "lucide-react"
-import Button from "../components/ui/Button"
-
+import { useState, useEffect } from "react";
+import { mockApi } from "../services/fakeApi";
+import "../styles/StudiesManager.css";
+import { Plus } from "lucide-react";
+import Button from "../components/ui/Button";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function StudiesManager({ userId, isAdmin }) {
-    const [studies, setStudies] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [showForm, setShowForm] = useState(false)
-    const [editingId, setEditingId] = useState(null)
+    const [studies, setStudies] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false); // nuevo estado de carga para guardado
+    const [showForm, setShowForm] = useState(false);
+    const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         title: "",
         institution: "",
         year: new Date().getFullYear(),
-    })
+    });
 
-    // Usamos useEffect para cargar los estudios al montar el componente
     useEffect(() => {
-        loadStudies()
-    }, [userId])
+        loadStudies();
+    }, [userId]);
 
-    // Función para cargar los estudios del usuario
     const loadStudies = async () => {
         try {
-            const studiesData = await mockApi.getStudies(userId)
-            setStudies(studiesData)
+            const studiesData = await mockApi.getStudies(userId);
+            setStudies(studiesData);
         } catch (error) {
-            console.error("Error cargando estudios:", error)
+            console.error("Error cargando estudios:", error);
+            toast.error("Error al cargar los estudios.");
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
-
-    // Función para manejar el submit del formulario
+    };
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+
+        if (!formData.title.trim() || !formData.institution.trim() || !formData.year) {
+            toast.error("Por favor completa todos los campos.");
+            return;
+        }
+
+        if (isNaN(formData.year) || formData.year < 1950 || formData.year > 2030) {
+            toast.error("El año debe ser un número entre 1950 y 2030.");
+            return;
+        }
+
+        setSaving(true); // comienza el guardado
+
         try {
             if (editingId) {
-                const updated = await mockApi.updateStudy(editingId, formData)
-                setStudies(studies.map((s) => (s.id === editingId ? updated : s)))
-                setEditingId(null)
-                setShowForm(false)  // <--- Agregar aquí para ocultar el formulario
+                const updated = await mockApi.updateStudy(editingId, formData);
+                setStudies(studies.map((s) => (s.id === editingId ? updated : s)));
+                toast.success("Estudio actualizado con éxito.");
+                setEditingId(null);
+                setShowForm(false);
             } else {
-                const newStudy = await mockApi.createStudy({ ...formData, userId })
-                setStudies([...studies, newStudy])
-                setShowForm(false)
+                const newStudy = await mockApi.createStudy({ ...formData, userId });
+                setStudies([...studies, newStudy]);
+                toast.success("Estudio agregado con éxito.");
+                setShowForm(false);
             }
-            setFormData({ title: "", institution: "", year: new Date().getFullYear() })
+            setFormData({ title: "", institution: "", year: new Date().getFullYear() });
         } catch (error) {
-            console.error("Error guardando estudio:", error)
+            console.error("Error guardando estudio:", error);
+            toast.error("Error al guardar el estudio.");
+        } finally {
+            setSaving(false); // termina el guardado
         }
-    }
+    };
 
-    // Funciones para manejar editar y eliminar estudios
     const handleEdit = (study) => {
         setFormData({
             title: study.title,
             institution: study.institution,
             year: study.year,
-        })
-        setEditingId(study.id)
-        setShowForm(true)
-    }
-
-    // Función para eliminar un estudio
+        });
+        setEditingId(study.id);
+        setShowForm(true);
+    };
 
     const handleDelete = async (id) => {
-        if (confirm("¿Eliminar este estudio?")) {
+        if (window.confirm("¿Eliminar este estudio?")) {
+            setSaving(true);
             try {
-                await mockApi.deleteStudy(id)
-                setStudies(studies.filter((s) => s.id !== id))
+                await mockApi.deleteStudy(id);
+                setStudies(studies.filter((s) => s.id !== id));
+                toast.success("Elemento eliminado correctamente");
             } catch (error) {
-                console.error("Error eliminando estudio:", error)
+                console.error("Error eliminando estudio:", error);
+                toast.error("Error al eliminar el estudio.");
+            } finally {
+                setSaving(false);
             }
         }
-    }
+    };
 
-    // Función para cancelar la edición y resetear el formulario
     const cancelEdit = () => {
-        setEditingId(null)
-        setFormData({ title: "", institution: "", year: new Date().getFullYear() })
-        setShowForm(false)
-    }
+        setEditingId(null);
+        setFormData({ title: "", institution: "", year: new Date().getFullYear() });
+        setShowForm(false);
+    };
 
-    if (loading) return <p>Cargando estudios...</p>
+    if (loading) return <p>Cargando estudios...</p>;
 
     return (
         <div className="studies-manager">
@@ -104,15 +122,19 @@ export default function StudiesManager({ userId, isAdmin }) {
                         type="text"
                         placeholder="Título"
                         value={formData.title}
-                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        required
+                        onChange={(e) =>
+                            setFormData({ ...formData, title: e.target.value })
+                        }
+                        disabled={saving}
                     />
                     <input
                         type="text"
                         placeholder="Institución"
                         value={formData.institution}
-                        onChange={(e) => setFormData({ ...formData, institution: e.target.value })}
-                        required
+                        onChange={(e) =>
+                            setFormData({ ...formData, institution: e.target.value })
+                        }
+                        disabled={saving}
                     />
                     <input
                         type="number"
@@ -120,16 +142,18 @@ export default function StudiesManager({ userId, isAdmin }) {
                         value={formData.year}
                         pattern="[0-9]*"
                         inputMode="numeric"
-                        onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
+                        onChange={(e) =>
+                            setFormData({ ...formData, year: parseInt(e.target.value) })
+                        }
                         min="1950"
                         max="2030"
-                        required
+                        disabled={saving}
                     />
                     <div className="form-actions">
-                        <Button type="submit" variant="primary" >
-                            {editingId ? "Actualizar" : "Guardar"}
+                        <Button type="submit" variant="primary" disabled={saving}>
+                            {saving ? "Guardando..." : editingId ? "Actualizar" : "Guardar"}
                         </Button>
-                        <Button type="button" variant="secondary" onClick={cancelEdit}>
+                        <Button type="button" variant="secondary" onClick={cancelEdit} disabled={saving}>
                             Cancelar
                         </Button>
                     </div>
@@ -138,10 +162,14 @@ export default function StudiesManager({ userId, isAdmin }) {
 
             <div className="study-list">
                 {studies.length === 0 ? (
-                    <p>{isAdmin ? "Este usuario no tiene estudios registrados." : "No tenés estudios registrados."}</p>
+                    <p>
+                        {isAdmin
+                            ? "Este usuario no tiene estudios registrados."
+                            : "No tenés estudios registrados."}
+                    </p>
                 ) : (
                     studies.map((study) => (
-                        <div key={study.id} className="study-card ">
+                        <div key={study.id} className="study-card">
                             <div>
                                 <h3>{study.title}</h3>
                                 <p>
@@ -149,10 +177,14 @@ export default function StudiesManager({ userId, isAdmin }) {
                                 </p>
                             </div>
                             <div className="actions">
-                                <Button variant="primary" onClick={() => handleEdit(study)}>
+                                <Button variant="primary" onClick={() => handleEdit(study)} disabled={saving}>
                                     Editar
                                 </Button>
-                                <Button variant="secondary" onClick={() => handleDelete(study.id)}>
+                                <Button
+                                    variant="secondary"
+                                    onClick={() => handleDelete(study.id)}
+                                    disabled={saving}
+                                >
                                     Eliminar
                                 </Button>
                             </div>
@@ -161,5 +193,5 @@ export default function StudiesManager({ userId, isAdmin }) {
                 )}
             </div>
         </div>
-    )
+    );
 }

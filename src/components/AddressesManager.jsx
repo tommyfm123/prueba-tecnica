@@ -1,68 +1,82 @@
-import React, { useState, useEffect } from "react"
-import { mockApi } from "../services/fakeApi"
-import "../styles/AddressesManager.css"
-import { Plus } from "lucide-react"
-import Button from "../components/ui/Button"
-// import RoleChip from "../components/ui/RoleChip"
-import TypeChip from "../components/ui/TypeChip"
-import { useAuth } from "../context/AuthContext"
+import React, { useState, useEffect } from "react";
+import { mockApi } from "../services/fakeApi";
+import "../styles/AddressesManager.css";
+import { Plus } from "lucide-react";
+import Button from "../components/ui/Button";
+import TypeChip from "../components/ui/TypeChip";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AddressesManager({ userId }) {
-    const [addresses, setAddresses] = useState([])
-    const { user } = useAuth()
-    const [loading, setLoading] = useState(true)
-    const [showForm, setShowForm] = useState(false)
-    const [editingId, setEditingId] = useState(null)
+    const [addresses, setAddresses] = useState([]);
+    const { user } = useAuth();
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false); // Estado para el guardado/eliminado
+    const [showForm, setShowForm] = useState(false);
+    const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         street: "",
         city: "",
         country: "",
         type: "Casa",
-    })
+    });
 
-    const role = user?.role || "usuario"
-    const isAdmin = role.toLowerCase() === "admin"
+    const role = user?.role || "usuario";
+    const isAdmin = role.toLowerCase() === "admin";
 
-    // Usamos UseEffect para cargar las direcciones al montar el componente
     useEffect(() => {
-        loadAddresses()
-    }, [userId])
-
-    // funcion para cargar las direcciones del usuario
+        loadAddresses();
+    }, [userId]);
 
     const loadAddresses = async () => {
         try {
-            const addressesData = await mockApi.getAddresses(userId)
-            setAddresses(addressesData)
+            const addressesData = await mockApi.getAddresses(userId);
+            setAddresses(addressesData);
         } catch (error) {
-            console.error("Error cargando direcciones:", error)
+            console.error("Error cargando direcciones:", error);
+            toast.error("Error al cargar las direcciones.");
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
-    // funcion para manejar el submit del formulario
+    const validateForm = () => {
+        if (!formData.street.trim() || !formData.city.trim() || !formData.country.trim()) {
+            toast.error("Por favor, completa todos los campos.");
+            return false;
+        }
+        return true;
+    };
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+
+        if (!validateForm()) return;
+
+        setSaving(true);
 
         try {
             if (editingId) {
-                const updated = await mockApi.updateAddress(editingId, formData)
-                setAddresses(addresses.map((a) => (a.id === editingId ? updated : a)))
-                setEditingId(null)
+                const updated = await mockApi.updateAddress(editingId, formData);
+                setAddresses(addresses.map((a) => (a.id === editingId ? updated : a)));
+                toast.success("Dirección actualizada correctamente.");
+                setEditingId(null);
+                setShowForm(false);
             } else {
-                const created = await mockApi.createAddress({ ...formData, userId })
-                setAddresses([...addresses, created])
-                setShowForm(false)
+                const created = await mockApi.createAddress({ ...formData, userId });
+                setAddresses([...addresses, created]);
+                toast.success("Dirección agregada correctamente.");
+                setShowForm(false);
             }
-            resetForm()
+            resetForm();
         } catch (error) {
-            console.error("Error guardando dirección:", error)
+            console.error("Error guardando dirección:", error);
+            toast.error("Error al guardar la dirección.");
+        } finally {
+            setSaving(false);
         }
-    }
-
-    // funcion para editar una dirección ya existente
+    };
 
     const handleEdit = (address) => {
         setFormData({
@@ -70,32 +84,34 @@ export default function AddressesManager({ userId }) {
             city: address.city,
             country: address.country,
             type: address.type,
-        })
-        setEditingId(address.id)
-    }
-
-    // funcion para eliminar una dirección
+        });
+        setEditingId(address.id);
+        setShowForm(true);
+    };
 
     const handleDelete = async (id) => {
         if (window.confirm("¿Estás seguro de que quieres eliminar esta dirección?")) {
+            setSaving(true);
             try {
-                await mockApi.deleteAddress(id)
-                setAddresses(addresses.filter((a) => a.id !== id))
+                await mockApi.deleteAddress(id);
+                setAddresses(addresses.filter((a) => a.id !== id));
+                toast.success("Dirección eliminada correctamente.");
             } catch (error) {
-                console.error("Error eliminando dirección:", error)
+                console.error("Error eliminando dirección:", error);
+                toast.error("Error al eliminar la dirección.");
+            } finally {
+                setSaving(false);
             }
         }
-    }
-
-    // funcion para resetear el formulario
+    };
 
     const resetForm = () => {
-        setEditingId(null)
-        setFormData({ street: "", city: "", country: "", type: "Casa" })
-    }
+        setEditingId(null);
+        setFormData({ street: "", city: "", country: "", type: "Casa" });
+    };
 
     if (loading) {
-        return <div className="addresses-loading">Cargando direcciones...</div>
+        return <div className="addresses-loading">Cargando direcciones...</div>;
     }
 
     return (
@@ -106,6 +122,7 @@ export default function AddressesManager({ userId }) {
                     variant="primary"
                     onClick={() => setShowForm(true)}
                     icon={Plus}
+                    disabled={saving}
                 >
                     Agregar Dirección
                 </Button>
@@ -118,24 +135,24 @@ export default function AddressesManager({ userId }) {
                         <input
                             value={formData.street}
                             onChange={(e) => setFormData({ ...formData, street: e.target.value })}
-                            required
                             placeholder="Dirección"
+                            disabled={saving}
                         />
                     </label>
                     <label>
                         <input
                             value={formData.city}
                             onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                            required
                             placeholder="Ciudad"
+                            disabled={saving}
                         />
                     </label>
                     <label>
                         <input
                             value={formData.country}
                             onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                            required
                             placeholder="País"
+                            disabled={saving}
                         />
                     </label>
                     <label>
@@ -143,6 +160,7 @@ export default function AddressesManager({ userId }) {
                         <select
                             value={formData.type}
                             onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                            disabled={saving}
                         >
                             <option value="Casa">Casa</option>
                             <option value="Trabajo">Trabajo</option>
@@ -150,16 +168,17 @@ export default function AddressesManager({ userId }) {
                         </select>
                     </label>
                     <div className="form-buttons">
-                        <Button type="submit" variant="primary">
-                            {editingId ? "Actualizar" : "Guardar"}
+                        <Button type="submit" variant="primary" disabled={saving}>
+                            {saving ? "Guardando..." : editingId ? "Actualizar" : "Guardar"}
                         </Button>
                         <Button
                             type="button"
                             variant="secondary"
                             onClick={() => {
-                                setShowForm(false)
-                                resetForm()
+                                setShowForm(false);
+                                resetForm();
                             }}
+                            disabled={saving}
                         >
                             Cancelar
                         </Button>
@@ -184,12 +203,14 @@ export default function AddressesManager({ userId }) {
                                 <Button
                                     variant="primary"
                                     onClick={() => handleEdit(address)}
+                                    disabled={saving}
                                 >
                                     Editar
                                 </Button>
                                 <Button
                                     variant="danger"
                                     onClick={() => handleDelete(address.id)}
+                                    disabled={saving}
                                 >
                                     Eliminar
                                 </Button>
@@ -199,5 +220,5 @@ export default function AddressesManager({ userId }) {
                 </div>
             )}
         </div>
-    )
+    );
 }

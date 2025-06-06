@@ -1,82 +1,133 @@
-import { useState, useEffect } from "react"
-import { mockApi } from "../services/fakeApi"
-import { useAuth } from "../context/AuthContext"
-import StudiesManager from "../components/StudiesManager"
-import AddressesManager from "../components/AddressesManager"
-import { Users, Plus, GraduationCap, MapPinHouse } from "lucide-react"
-import "../styles/AdminDashboard.css"
-import Button from "../components/ui/Button"
-import RoleChip from "../components/ui/RoleChip"
+import { useState, useEffect } from "react";
+import { mockApi } from "../services/fakeApi";
+import { useAuth } from "../context/AuthContext";
+import StudiesManager from "../components/StudiesManager";
+import AddressesManager from "../components/AddressesManager";
+import { Users, UserX, GraduationCap, MapPinHouse, Edit } from "lucide-react";
+import "../styles/AdminDashboard.css";
+import Button from "../components/ui/Button";
+import RoleChip from "../components/ui/RoleChip";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AdminDashboard() {
-    const { user } = useAuth() // traemos los datos del usuario logueado desde el contexto de autenticación
-    const [users, setUsers] = useState([])
-    const [selectedUser, setSelectedUser] = useState(null)
-    const [loading, setLoading] = useState(true)
-    const [showForm, setShowForm] = useState(false)
-    const [selectedTab, setSelectedTab] = useState("studies")
-    const [newUser, setNewUser] = useState({
+    const { user } = useAuth();
+    const [users, setUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [selectedTab, setSelectedTab] = useState("studies");
+    const [editingUser, setEditingUser] = useState(false);
+    const [formLoading, setFormLoading] = useState(false); // nuevo estado para mostrar carga en el form
+
+    const [formData, setFormData] = useState({
         name: "",
         email: "",
         password: "",
-        role: "user"
-    })
-
-    // Esto carga a los usuarios al montar el componente
+    });
 
     useEffect(() => {
-        loadUsers()
-    }, [])
-
-    // Función para obtener usuarios desde la API simulada
+        loadUsers();
+    }, []);
 
     const loadUsers = async () => {
         try {
-            const usersData = await mockApi.getUsers()
-            setUsers(usersData)
+            const response = await mockApi.getUsers();
+            setUsers(response);
         } catch (error) {
-            console.error("Error cargando usuarios:", error)
+            console.error("Error cargando usuarios:", error);
+            toast.error("Error cargando usuarios.");
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
-    // Crea un nuevo usuario desde el formulario
+    // Cuando seleccionás un usuario, cerramos el formulario de edición para evitar confusiones
+    useEffect(() => {
+        setEditingUser(false);
+        setFormData({ name: "", email: "", password: "" });
+    }, [selectedUser]);
 
-    const handleCreateUser = async (e) => {
-        e.preventDefault()
+    const handleEditUser = (user) => {
+        setFormData({
+            name: user.name,
+            email: user.email,
+            password: "",
+        });
+        setEditingUser(true);
+    };
+
+    const handleUpdateUser = async () => {
+        const dataToUpdate = { ...formData };
+        if (!dataToUpdate.password.trim()) {
+            delete dataToUpdate.password;
+        }
+
+        if (!dataToUpdate.name.trim() || !dataToUpdate.email.trim()) {
+            toast.error("Por favor completa el nombre y el email.");
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(dataToUpdate.email)) {
+            toast.error("Por favor ingresa un email válido.");
+            return;
+        }
+
+        setFormLoading(true); // empieza la carga
         try {
-            const created = await mockApi.createUser(newUser)
-            setUsers([...users, created])
-            setNewUser({ name: "", email: "", password: "", role: "user" })
-            setShowForm(false)
+            await mockApi.updateUser(selectedUser.id, dataToUpdate);
+            toast.success("Usuario actualizado correctamente.");
+            setEditingUser(false);
+            setFormData({ name: "", email: "", password: "" });
+            loadUsers();
         } catch (error) {
-            console.error("Error creando usuario:", error)
+            console.error("Error actualizando usuario:", error);
+            toast.error("Error al actualizar el usuario.");
+        } finally {
+            setFormLoading(false); // termina la carga
         }
-    }
+    };
+
+    const handleDeleteUser = async () => {
+        if (window.confirm("¿Estás seguro de que quieres eliminar este usuario?")) {
+            setFormLoading(true); // usa el mismo loading para evitar nuevo estado
+            try {
+                await mockApi.deleteUser(selectedUser.id);
+                toast.success("Usuario eliminado correctamente.");
+                setSelectedUser(null);
+                loadUsers();
+            } catch (error) {
+                console.error("Error eliminando usuario:", error);
+                toast.error("Error al eliminar el usuario.");
+            } finally {
+                setFormLoading(false);
+            }
+        }
+    };
 
     if (loading) {
-        return <div className="admin-loading">Cargando usuarios...</div>
+        return <div className="admin-loading">Cargando usuarios...</div>;
     }
 
     return (
         <div className="admin-dashboard">
-            <h1>Dashboard</h1>
-            <p>Bienvenido, <strong>{user?.name}</strong> (<em>{user?.role}</em>)</p>
+            <h1>Dashboard Admin</h1>
+            <p>
+                Bienvenido, <strong>{user?.name}</strong> (<em>{user?.role}</em>)
+            </p>
+
             <div className="stats">
                 <div className="stat-box">
                     <h3>Total</h3>
                     <p>{users.length}</p>
                 </div>
-
                 <div className="stat-box">
                     <h3>Admins</h3>
-                    <p>{users.filter(u => u.role === "admin").length}</p>
+                    <p>{users.filter((u) => u.role === "admin").length}</p>
                 </div>
-
                 <div className="stat-box">
                     <h3>Usuarios</h3>
-                    <p>{users.filter(u => u.role === "user").length}</p>
+                    <p>{users.filter((u) => u.role === "user").length}</p>
                 </div>
             </div>
 
@@ -84,57 +135,23 @@ export default function AdminDashboard() {
                 <div className="user-list">
                     <div className="user-list-header">
                         <div className="containerUser">
-                            <h2><Users /> Usuarios</h2>
-                            <Button variant="primary" icon={Plus} onClick={() => setShowForm(true)}>Nuevo</Button>
+                            <h2>
+                                <Users /> Usuarios
+                            </h2>
                         </div>
                         <p>Gestiona todos los usuarios del sistema</p>
                     </div>
 
-                    {showForm && (
-                        <form onSubmit={handleCreateUser} className="user-form">
-                            <input
-                                type="text"
-                                placeholder="Nombre"
-                                value={newUser.name}
-                                onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-                                required
-                            />
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                value={newUser.email}
-                                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                                required
-                            />
-                            <input
-                                type="password"
-                                placeholder="Contraseña"
-                                value={newUser.password}
-                                onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-                                required
-                            />
-                            <select
-                                value={newUser.role}
-                                onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                            >
-                                <option value="user">Usuario</option>
-                                <option value="admin">Administrador</option>
-                            </select>
-                            <div className="containerBtn" style={{ display: 'flex', gap: '10px' }}>
-                                <Button variant="primary" type="submit">Crear Usuario</Button>
-                                <Button variant="secondary" type="button" onClick={() => setShowForm(false)}>Cancelar</Button>
-                            </div>
-                        </form>
-                    )}
-
                     <div className="user-items">
-                        {users.map(u => (
+                        {users.map((u) => (
                             <div
                                 key={u.id}
                                 className={`user-item ${selectedUser?.id === u.id ? "active" : ""}`}
                                 onClick={() => setSelectedUser(u)}
                             >
-                                <p className="nombre"><strong>{u.name}</strong></p>
+                                <p className="nombre">
+                                    <strong>{u.name}</strong>
+                                </p>
                                 <p className="email">{u.email}</p>
                             </div>
                         ))}
@@ -148,8 +165,61 @@ export default function AdminDashboard() {
                                 <h2>Datos de {selectedUser.name}</h2>
                                 <RoleChip role={selectedUser.role} />
                                 <p>{selectedUser.email}</p>
+
+                                <div className="tabs" style={{ display: "flex", gap: "10px" }}>
+                                    <Button variant="primary" onClick={() => handleEditUser(selectedUser)}>
+                                        <Edit size={16} /> Editar Perfil
+                                    </Button>
+                                    <Button variant="danger" onClick={handleDeleteUser}>
+                                        <UserX size={16} /> Eliminar Usuario
+                                    </Button>
+                                </div>
+
+                                <hr style={{ margin: "15px 0", borderTop: "1px solid #ccc" }} />
                             </div>
 
+                            {/* Formulario para editar perfil */}
+                            {editingUser && (
+                                <form
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        handleUpdateUser();
+                                    }}
+                                    className="user-form"
+                                >
+                                    <input
+                                        type="text"
+                                        placeholder="Nombre"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    />
+                                    <input
+                                        type="email"
+                                        placeholder="Email"
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    />
+                                    <input
+                                        type="password"
+                                        placeholder="Nueva contraseña (opcional)"
+                                        value={formData.password}
+                                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                    />
+                                    <div className="containerBtn" style={{ display: "flex", gap: "10px" }}>
+                                        <Button variant="primary" type="submit" disabled={formLoading}>
+                                            {formLoading ? "Guardando..." : "Guardar"}
+                                        </Button>
+                                        <Button
+                                            variant="secondary"
+                                            type="button"
+                                            onClick={() => setEditingUser(false)}
+                                            disabled={formLoading}
+                                        >
+                                            Cancelar
+                                        </Button>
+                                    </div>
+                                </form>
+                            )}
 
                             <div className="tabs">
                                 <Button
@@ -169,8 +239,12 @@ export default function AdminDashboard() {
                             </div>
 
                             <div className="tab-content">
-                                {selectedTab === "studies" && <StudiesManager userId={selectedUser.id} isAdmin={true} />}
-                                {selectedTab === "addresses" && <AddressesManager userId={selectedUser.id} isAdmin={true} />}
+                                {selectedTab === "studies" && (
+                                    <StudiesManager userId={selectedUser.id} isAdmin={true} />
+                                )}
+                                {selectedTab === "addresses" && (
+                                    <AddressesManager userId={selectedUser.id} isAdmin={true} />
+                                )}
                             </div>
                         </>
                     ) : (
@@ -179,5 +253,5 @@ export default function AdminDashboard() {
                 </div>
             </div>
         </div>
-    )
+    );
 }

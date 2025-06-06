@@ -1,33 +1,77 @@
-import { useState } from "react"
-import { useAuth } from "../context/AuthContext"
-import { useNavigate } from "react-router-dom"
-import "../styles/LoginForm.css"
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { mockApi } from "../services/fakeApi";
+import "react-toastify/dist/ReactToastify.css";
+import "../styles/LoginForm.css";
 
 export default function LoginForm() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [showPassword, setShowPassword] = useState(false)
-    const [error, setError] = useState("")
-    const [loading, setLoading] = useState(false)
-    const { login } = useAuth()
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
-    const navigate = useNavigate()
+    const [users, setUsers] = useState([]);
 
-    // Maneja el envío del formulario
+    // Obtener usuarios con contraseñas
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const usersData = await mockApi.getUsersWithPasswords();
+                setUsers(usersData);
+            } catch (error) {
+                console.error("Error cargando usuarios:", error);
+                toast.error("Error al cargar usuarios.");
+            }
+        };
+
+        fetchUsers();
+    }, []);
+
+    const validateForm = () => {
+        if (!email.trim() || !password.trim()) {
+            toast.error("Por favor, completa todos los campos.");
+            return false;
+        }
+        const emailRegex = /\S+@\S+\.\S+/;
+        if (!emailRegex.test(email)) {
+            toast.error("Email inválido");
+            return false;
+        }
+        return true;
+    };
+
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        setError("")
-        setLoading(true)
+        e.preventDefault();
+        setLoading(true);
 
-        const success = await login(email, password)
-
-        if (!success) {
-            setError("Credenciales inválidas. Intenta de nuevo.")
-        } else {
-            navigate("/dashboard") // Con esto se redirige al usuario al dashboard después de iniciar sesión
+        if (!validateForm()) {
+            setLoading(false);
+            return;
         }
 
-    }
+        const success = await login(email, password);
+
+        if (!success) {
+            toast.error("Credenciales inválidas. Intenta de nuevo.");
+        } else {
+            toast.success("¡Sesión iniciada correctamente!");
+
+            const storedUser = JSON.parse(sessionStorage.getItem("user"));
+            if (storedUser.role === "admin") {
+                navigate("/dashboard-admin");
+            } else if (storedUser.role === "user") {
+                navigate("/dashboard-user");
+            } else {
+                toast.error("Rol no reconocido. Contacta al administrador.");
+            }
+        }
+
+        setLoading(false);
+    };
 
     return (
         <div className="login-card">
@@ -45,7 +89,6 @@ export default function LoginForm() {
                         placeholder="Ingresa tu email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        required
                     />
                 </div>
 
@@ -58,7 +101,6 @@ export default function LoginForm() {
                             placeholder="Ingresa tu contraseña"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            required
                         />
                         <button
                             type="button"
@@ -70,42 +112,32 @@ export default function LoginForm() {
                     </div>
                 </div>
 
-                {error && <div className="login-error">{error}</div>}
-
                 <button type="submit" className="login-button" disabled={loading}>
                     {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
                 </button>
             </form>
 
             <div className="demo-credentials">
-                <p>Credenciales de prueba:</p>
+                <p>Usuarios registrados (email y contraseña):</p>
                 <table className="demo-table">
                     <thead>
                         <tr>
                             <th>Rol</th>
-                            <th>Mail</th>
+                            <th>Email</th>
                             <th>Contraseña</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>Admin</strong></td>
-                            <td>admin@test.com</td>
-                            <td>admin123</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Usuario</strong></td>
-                            <td>tomas@user.com</td>
-                            <td>user123</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Usuario</strong></td>
-                            <td>maria@user.com</td>
-                            <td>user123</td>
-                        </tr>
+                        {users.map((u) => (
+                            <tr key={u.id}>
+                                <td><strong>{u.role === "admin" ? "Admin" : "Usuario"}</strong></td>
+                                <td>{u.email}</td>
+                                <td>{u.password}</td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
         </div>
-    )
+    );
 }
