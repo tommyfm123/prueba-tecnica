@@ -37,6 +37,8 @@ const mockAddresses = [
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+// Esta es la simulación de autenticación y API con datos falsos
+
 export const mockAuth = {
     async login(email, password) {
         await delay(1000);
@@ -57,6 +59,7 @@ export const mockAuth = {
         return { success: false, message: "Credenciales inválidas" };
     },
 };
+
 
 export const mockApi = {
     async getUsers() {

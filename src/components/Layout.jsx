@@ -1,4 +1,4 @@
-// components/Layout.jsx
+
 import Navbar from "./Navbar"
 import "../styles/Layout.css"
 

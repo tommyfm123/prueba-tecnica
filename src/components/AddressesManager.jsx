@@ -29,6 +29,7 @@ export default function AddressesManager({ userId }) {
         loadAddresses();
     }, [userId]);
 
+    // Carga las direcciones del usuario
     const loadAddresses = async () => {
         try {
             const addressesData = await mockApi.getAddresses(userId);
@@ -41,6 +42,7 @@ export default function AddressesManager({ userId }) {
         }
     };
 
+    // Valida el formulario antes de enviar
     const validateForm = () => {
         if (!formData.street.trim() || !formData.city.trim() || !formData.country.trim()) {
             toast.error("Por favor, completa todos los campos.");
@@ -49,6 +51,7 @@ export default function AddressesManager({ userId }) {
         return true;
     };
 
+    // Maneja el envío del formulario para agregar o editar direcciones
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -78,6 +81,7 @@ export default function AddressesManager({ userId }) {
         }
     };
 
+    // Maneja la edición de las direcciones
     const handleEdit = (address) => {
         setFormData({
             street: address.street,
@@ -89,6 +93,7 @@ export default function AddressesManager({ userId }) {
         setShowForm(true);
     };
 
+    // Manejar la eliminación de una dirección
     const handleDelete = async (id) => {
         if (window.confirm("¿Estás seguro de que quieres eliminar esta dirección?")) {
             setSaving(true);
@@ -105,6 +110,7 @@ export default function AddressesManager({ userId }) {
         }
     };
 
+    // Resetear el formulario a su estado inicial
     const resetForm = () => {
         setEditingId(null);
         setFormData({ street: "", city: "", country: "", type: "Casa" });

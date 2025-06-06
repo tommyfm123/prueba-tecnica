@@ -31,6 +31,7 @@ export default function LoginForm() {
         fetchUsers();
     }, []);
 
+    // Validar formulario antes de enviar
     const validateForm = () => {
         if (!email.trim() || !password.trim()) {
             toast.error("Por favor, completa todos los campos.");
@@ -43,6 +44,8 @@ export default function LoginForm() {
         }
         return true;
     };
+
+    // Manejar el envío del formulario
 
     const handleSubmit = async (e) => {
         e.preventDefault();

@@ -18,10 +18,12 @@ export default function StudiesManager({ userId, isAdmin }) {
         year: new Date().getFullYear(),
     });
 
+
     useEffect(() => {
         loadStudies();
     }, [userId]);
 
+    // Cargar estudios del usuario
     const loadStudies = async () => {
         try {
             const studiesData = await mockApi.getStudies(userId);
@@ -34,6 +36,7 @@ export default function StudiesManager({ userId, isAdmin }) {
         }
     };
 
+    // Manejar el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -71,6 +74,7 @@ export default function StudiesManager({ userId, isAdmin }) {
         }
     };
 
+    // Manejar la edición de un estudio
     const handleEdit = (study) => {
         setFormData({
             title: study.title,
@@ -81,6 +85,7 @@ export default function StudiesManager({ userId, isAdmin }) {
         setShowForm(true);
     };
 
+    // Manejar la eliminación de un estudio
     const handleDelete = async (id) => {
         if (window.confirm("¿Eliminar este estudio?")) {
             setSaving(true);
@@ -97,6 +102,7 @@ export default function StudiesManager({ userId, isAdmin }) {
         }
     };
 
+    // Cancelar edición y limpiar formulario
     const cancelEdit = () => {
         setEditingId(null);
         setFormData({ title: "", institution: "", year: new Date().getFullYear() });

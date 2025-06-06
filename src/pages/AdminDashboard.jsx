@@ -3,7 +3,7 @@ import { mockApi } from "../services/fakeApi";
 import { useAuth } from "../context/AuthContext";
 import StudiesManager from "../components/StudiesManager";
 import AddressesManager from "../components/AddressesManager";
-import { Users, UserX, GraduationCap, MapPinHouse, Edit } from "lucide-react";
+import { Users, UserX, GraduationCap, MapPinHouse, Edit, Plus } from "lucide-react";
 import "../styles/AdminDashboard.css";
 import Button from "../components/ui/Button";
 import RoleChip from "../components/ui/RoleChip";
@@ -17,7 +17,8 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true);
     const [selectedTab, setSelectedTab] = useState("studies");
     const [editingUser, setEditingUser] = useState(false);
-    const [formLoading, setFormLoading] = useState(false); // nuevo estado para mostrar carga en el form
+    const [creatingUser, setCreatingUser] = useState(false);
+    const [formLoading, setFormLoading] = useState(false);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -25,10 +26,12 @@ export default function AdminDashboard() {
         password: "",
     });
 
+    // Esto carga usuarios al montar el componente
     useEffect(() => {
         loadUsers();
     }, []);
 
+    // Función para cargar usuarios desde el mockApi
     const loadUsers = async () => {
         try {
             const response = await mockApi.getUsers();
@@ -41,9 +44,10 @@ export default function AdminDashboard() {
         }
     };
 
-    // Cuando seleccionás un usuario, cerramos el formulario de edición para evitar confusiones
+
     useEffect(() => {
         setEditingUser(false);
+        setCreatingUser(false);
         setFormData({ name: "", email: "", password: "" });
     }, [selectedUser]);
 
@@ -56,6 +60,7 @@ export default function AdminDashboard() {
         setEditingUser(true);
     };
 
+    // Función para actualizar un usuario
     const handleUpdateUser = async () => {
         const dataToUpdate = { ...formData };
         if (!dataToUpdate.password.trim()) {
@@ -73,24 +78,35 @@ export default function AdminDashboard() {
             return;
         }
 
-        setFormLoading(true); // empieza la carga
+        // Verificar que el email no exista ya
+        setFormLoading(true);
         try {
-            await mockApi.updateUser(selectedUser.id, dataToUpdate);
+            const updatedUser = await mockApi.updateUser(selectedUser.id, dataToUpdate);
             toast.success("Usuario actualizado correctamente.");
+
+            setUsers((prevUsers) =>
+                prevUsers.map((u) => (u.id === selectedUser.id ? { ...u, ...updatedUser } : u))
+            );
+
+            setSelectedUser((prev) => ({
+                ...prev,
+                ...updatedUser,
+            }));
+
             setEditingUser(false);
             setFormData({ name: "", email: "", password: "" });
-            loadUsers();
         } catch (error) {
             console.error("Error actualizando usuario:", error);
             toast.error("Error al actualizar el usuario.");
         } finally {
-            setFormLoading(false); // termina la carga
+            setFormLoading(false);
         }
     };
 
+    // Función para eliminar un usuario
     const handleDeleteUser = async () => {
         if (window.confirm("¿Estás seguro de que quieres eliminar este usuario?")) {
-            setFormLoading(true); // usa el mismo loading para evitar nuevo estado
+            setFormLoading(true);
             try {
                 await mockApi.deleteUser(selectedUser.id);
                 toast.success("Usuario eliminado correctamente.");
@@ -102,6 +118,48 @@ export default function AdminDashboard() {
             } finally {
                 setFormLoading(false);
             }
+        }
+    };
+
+    // Función para crear un nuevo usuario
+    const handleCreateUser = () => {
+        setCreatingUser(true);
+        setSelectedUser(null);
+        setFormData({ name: "", email: "", password: "" });
+    };
+
+    // Función para manejar el envío del formulario de creación de usuario
+    const handleSubmitNewUser = async () => {
+        if (!formData.name.trim() || !formData.email.trim() || !formData.password.trim()) {
+            toast.error("Completa todos los campos para crear un nuevo usuario.");
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            toast.error("Por favor ingresa un email válido.");
+            return;
+        }
+
+        // Verificar que el email no exista ya
+        const emailExists = users.some((u) => u.email === formData.email);
+        if (emailExists) {
+            toast.error("Ese email ya está en uso. Por favor elige otro.");
+            return;
+        }
+
+        setFormLoading(true);
+        try {
+            await mockApi.createUser({ ...formData, role: "user" });
+            toast.success("Usuario creado correctamente.");
+            loadUsers();
+            setCreatingUser(false);
+            setFormData({ name: "", email: "", password: "" });
+        } catch (error) {
+            console.error("Error creando usuario:", error);
+            toast.error("Error al crear el usuario.");
+        } finally {
+            setFormLoading(false);
         }
     };
 
@@ -139,9 +197,10 @@ export default function AdminDashboard() {
                                 <Users /> Usuarios
                             </h2>
                         </div>
-                        <p>Gestiona todos los usuarios del sistema</p>
+                        <Button variant="primary" onClick={handleCreateUser}>
+                            <Plus size={16} /> Crear Usuario
+                        </Button>
                     </div>
-
                     <div className="user-items">
                         {users.map((u) => (
                             <div
@@ -159,7 +218,50 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="user-detail">
-                    {selectedUser ? (
+                    {creatingUser ? (
+                        <div className="user-information">
+                            <h2>Crear Nuevo Usuario</h2>
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    handleSubmitNewUser();
+                                }}
+                                className="user-form"
+                            >
+                                <input
+                                    type="text"
+                                    placeholder="Nombre"
+                                    value={formData.name}
+                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                />
+                                <input
+                                    type="email"
+                                    placeholder="Email"
+                                    value={formData.email}
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                />
+                                <input
+                                    type="password"
+                                    placeholder="Contraseña"
+                                    value={formData.password}
+                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                />
+                                <div className="containerBtn" style={{ display: "flex", gap: "10px" }}>
+                                    <Button variant="primary" type="submit" disabled={formLoading}>
+                                        {formLoading ? "Guardando..." : "Crear"}
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        type="button"
+                                        onClick={() => setCreatingUser(false)}
+                                        disabled={formLoading}
+                                    >
+                                        Cancelar
+                                    </Button>
+                                </div>
+                            </form>
+                        </div>
+                    ) : selectedUser ? (
                         <>
                             <div className="user-information">
                                 <h2>Datos de {selectedUser.name}</h2>
@@ -178,7 +280,6 @@ export default function AdminDashboard() {
                                 <hr style={{ margin: "15px 0", borderTop: "1px solid #ccc" }} />
                             </div>
 
-                            {/* Formulario para editar perfil */}
                             {editingUser && (
                                 <form
                                     onSubmit={(e) => {
@@ -248,7 +349,9 @@ export default function AdminDashboard() {
                             </div>
                         </>
                     ) : (
-                        <p className="SelectData">Seleccioná un usuario para ver los datos</p>
+                        <p className="SelectData">
+                            Seleccioná un usuario o crea uno nuevo para ver los datos
+                        </p>
                     )}
                 </div>
             </div>
