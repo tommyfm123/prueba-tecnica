@@ -58,7 +58,7 @@ export default function LoginForm() {
         if (!success) {
             toast.error("Credenciales inválidas. Intenta de nuevo.");
         } else {
-            toast.success("¡Sesión iniciada correctamente!");
+            toast.success("Sesión iniciada correctamente!");
 
             const storedUser = JSON.parse(sessionStorage.getItem("user"));
             if (storedUser.role === "admin") {

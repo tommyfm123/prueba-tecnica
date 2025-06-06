@@ -79,7 +79,6 @@ export const mockApi = {
         await delay(500);
         const index = mockUsers.findIndex((u) => u.id === id);
         if (index !== -1) {
-            // No sobreescribas la contraseña si no se pasó
             if (!userData.password || userData.password.trim() === "") {
                 delete userData.password;
             }
